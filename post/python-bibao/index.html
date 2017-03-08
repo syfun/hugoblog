@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python闭包的作用域理解</title>
+<meta name="description" content=" Sung Yung&#39;s Personal blog about everything">
+<meta name="generator" content="Hugo 0.19" />
+<meta property="og:title" content="Python闭包的作用域理解" />
+<meta property="og:description" content="什么是闭包
+
+在维基中，闭包的解释是这样的：
+
+
+在计算机科学中，闭包（Closure）是词法闭包（Lexical Closure）的简称，是引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。
+
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/python-bibao/" />
+
+
+
+<meta property="article:published_time" content="2015-07-22T22:23:31&#43;08:00"/>
+<meta property="article:modified_time" content="2015-07-22T22:23:31&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+<script type="text/javascript" src="/js/scripts.js"></script>
+</head>
+<body class="body body-right-sidebar mobile" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+	<div class="container container-outer">
+		<header class="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div class="container container-inner clearfix">
+				<div class="logo" role="banner" itemscope="itemscope" itemtype="http://schema.org/Brand">
+					<a class="logo__link" href="/" title="Sung Yung" rel="home">
+						<h1 class="logo__title">Sung Yung</h1>
+						<h2 class="logo__tagline">人生苦短，我爱Python</h2>
+					</a>
+				</div>
+			</div>
+			<nav class="menu" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<ul class="menu__list">
+	</ul>
+</nav>
+		</header>
+		<div class="wrapper clearfix">
+
+<div class="main-content content" role="main" itemprop="mainContentOfPage">
+	<article class="post">
+		<header class="post__header clearfix">
+			<h1 class="post__title">Python闭包的作用域理解</h1>
+			<p class="post__meta meta">
+				<svg class="icon icon-time" height="14" viewBox="0 0 16 16" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+				<time class="post__meta-date" datetime="2015-07-22 22:23:31 &#43;0800 CST">July 22, 2015</time>
+				<span class="post__meta-categories meta-categories">
+					<svg class="icon icon-category" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+					<a class="meta-categories__link" href="/categories/python" rel="category">Python</a></span>
+			</p>
+		</header>
+		<div class="post__content clearfix">
+			<h2 id="什么是闭包">什么是闭包</h2>
+
+<p>在维基中，闭包的解释是这样的：</p>
+
+<blockquote>
+<p>在计算机科学中，闭包（Closure）是词法闭包（Lexical Closure）的简称，是引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。</p>
+</blockquote>
+
+<p></p>
+
+<p>我们来看一个简单的实例：</p>
+
+<pre><code class="language-python">def outer(arg):
+    def inner():
+        print arg * arg
+    return inner
+
+&gt;&gt;&gt; f = outer(2)
+&gt;&gt;&gt; f()
+4
+</code></pre>
+
+<p>内部函数inner调用外部函数outer的局部变量arg，它保存了outer的arg值。这就是闭包。</p>
+
+<h2 id="从作用域的角度理解">从作用域的角度理解</h2>
+
+<p>把上面的例子改一下，在函数内部输出局部命名空间:</p>
+
+<pre><code class="language-python">def outer(arg):
+    print locals()
+    def inner():
+        x = arg * arg
+        print locals()
+        print x
+    return inner
+
+&gt;&gt;&gt; f = outer(2)
+{'arg': 2}
+&gt;&gt;&gt; f()
+{'x': 4, 'arg': 2}
+4
+&gt;&gt;&gt;
+</code></pre>
+
+<p>在outer中，局部命名空间只有一个键arg，而在inner内部也有arg。上面说的inner保存了outer的arg值，我们就可以理解为inner的局部命名空间保存了arg。</p>
+
+<p>这么一理解，就会发现闭包其实就这么简单。</p>
+
+<p>另外再瞎扯一句，python中的装饰器其实就是闭包。</p>
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="m4.73135 3.3795002q0-.5597-.39604-.9557-.39604-.3961-.95577-.3961-.55974 0-.95578.3961-.39604.396-.39604.9557 0 .5598.39604.9558.39604.3961.95578.3961.55973 0 .95577-.3961.39604-.396.39604-.9558zm11.26865 6.0832q0 .5596998-.39076.9504998l-5.18548 5.196q-.41188.3908-.9610504.3908-.55974 0-.9505-.3908l-7.5511496-7.5616998q-.40132-.3907-.68119-1.0666-.27987-.6759-.27987-1.2357v-4.3934q0-.54920004.40132-.95050004.40132-.4013.9505-.4013h4.39339q.55974 0 1.23565.2799.67591.2798 1.07723.6812l7.55115 7.54060004q.39076.4118.39076.961z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link" href="/tags/python/" rel="tag">Python</a></li>
+	</ul>
+</div>
+
+	</article>
+	
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Sung Yung avatar" src="/img/sy.jpg" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Sung Yung</span>
+	</div>
+	<div class="authorbox__description">
+		一枚Pythoner，热爱编程，喜欢新东西（当然女朋友不用）。
+	</div>
+</div>
+	
+<nav class="post-nav row clearfix" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<div class="post-nav__item post-nav__item--prev col-1-2">
+		<a class="post-nav__link" href="/post/python-twisted01/" rel="prev"><span class="post-nav__caption">«Previous</span><p class="post-nav__post-title">Twisted源码分析系列01-reactor</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next col-1-2">
+		<a class="post-nav__link" href="/post/python-decorate/" rel="next"><span class="post-nav__caption">Next»</span><p class="post-nav__post-title">Python装饰器的几种类型</p></a>
+	</div>
+</nav>
+
+	
+</div>
+
+<aside class="sidebar" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+	
+<div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="//google.com/search">
+		<label>
+			<span class="screen-reader-text">Search for:</span>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+	
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/python-property/">Python Week 0001 --- property</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/swift-tempurl/">Openstack Swift tempurl 和 largeobject 支持</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-howto-descriptor/">Pythons HOWTO之属性描述符</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-decorate/">Python装饰器的几种类型</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-bibao/">Python闭包的作用域理解</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-twisted01/">Twisted源码分析系列01-reactor</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-with/">浅谈Python的with语句(转载)</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-future/">Python __future__ 模块</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/pass/">PaaS以及开源PaaS平台</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/cloudfoundry/">深入CloudFoundry一周年（转载）</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/python">Python</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/python-everyweek">Python-Everyweek</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e4%ba%91%e8%ae%a1%e7%ae%97">云计算</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%85%b6%e4%bb%96">其他</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget__link widget__link--taglist" href="/tags/python" title="python">python</a>
+	</div>
+</div>
+</aside>
+	</div>
+		<footer class="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div class="container container-inner">
+				<p class="footer__copyright">&copy; 2017 Sung Yung. Based on <a href="//wordpress.org/themes/mh-magazine-lite/" target="_blank" rel="nofollow noopener noreferrer">MH Magazine lite</a>.</p>
+			</div>
+		</footer>
+	</div>
+
+<script>
+	var navigation = responsiveNav(".menu", {
+		navClass: "menu--collapse",
+	});
+</script>
+
+</body>
+</html>

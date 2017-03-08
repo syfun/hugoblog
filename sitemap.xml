@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>/about/</loc>
+    <lastmod>2017-03-07T21:18:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-property/</loc>
+    <lastmod>2016-06-03T19:10:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/swift-tempurl/</loc>
+    <lastmod>2016-01-04T19:07:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-howto-descriptor/</loc>
+    <lastmod>2015-08-08T22:27:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-decorate/</loc>
+    <lastmod>2015-07-27T22:25:34+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-bibao/</loc>
+    <lastmod>2015-07-22T22:23:31+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-twisted01/</loc>
+    <lastmod>2015-07-14T22:22:03+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-with/</loc>
+    <lastmod>2015-07-07T22:20:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-future/</loc>
+    <lastmod>2015-07-03T22:18:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/pass/</loc>
+    <lastmod>2015-06-26T22:12:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/cloudfoundry/</loc>
+    <lastmod>2015-06-24T22:05:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/c-args/</loc>
+    <lastmod>2015-06-17T22:01:25+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/pgpool/</loc>
+    <lastmod>2015-05-10T19:18:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-routes/</loc>
+    <lastmod>2015-04-08T19:21:51+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/pg-subprocess/</loc>
+    <lastmod>2015-04-05T19:19:35+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/python-argparse/</loc>
+    <lastmod>2015-04-02T19:21:04+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/vs-build-pg/</loc>
+    <lastmod>2015-03-10T19:24:26+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/paste-deploy/</loc>
+    <lastmod>2014-08-09T19:16:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/oslo-config/</loc>
+    <lastmod>2014-07-11T19:15:05+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/swift-short-url/</loc>
+    <lastmod>2014-06-10T19:22:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/swift-ring-builder/</loc>
+    <lastmod>2014-05-11T19:23:24+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2016-06-03T19:10:15+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/python/</loc>
+    <lastmod>2016-06-03T19:10:15+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/python/</loc>
+    <lastmod>2015-08-08T22:27:41+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/python-everyweek/</loc>
+    <lastmod>2016-06-03T19:10:15+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2016-06-03T19:10:15+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <lastmod>2016-01-04T19:07:44+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/%E5%85%B6%E4%BB%96/</loc>
+    <lastmod>2015-06-17T22:01:25+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

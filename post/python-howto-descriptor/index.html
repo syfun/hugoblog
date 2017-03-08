@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pythons HOWTO之属性描述符</title>
+<meta name="description" content=" Sung Yung&#39;s Personal blog about everything">
+<meta name="generator" content="Hugo 0.19" />
+<meta property="og:title" content="Pythons HOWTO之属性描述符" />
+<meta property="og:description" content="今天开个新坑，Pythons HOWTOS系列，主要是对官方文档的翻译。由于英语水平有限，基本上都是意译。这里附上链接。
+
+本篇是第一篇，主要说的是属性描述符。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/python-howto-descriptor/" />
+
+
+
+<meta property="article:published_time" content="2015-08-08T22:27:41&#43;08:00"/>
+<meta property="article:modified_time" content="2015-08-08T22:27:41&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+<script type="text/javascript" src="/js/scripts.js"></script>
+</head>
+<body class="body body-right-sidebar mobile" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+	<div class="container container-outer">
+		<header class="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div class="container container-inner clearfix">
+				<div class="logo" role="banner" itemscope="itemscope" itemtype="http://schema.org/Brand">
+					<a class="logo__link" href="/" title="Sung Yung" rel="home">
+						<h1 class="logo__title">Sung Yung</h1>
+						<h2 class="logo__tagline">人生苦短，我爱Python</h2>
+					</a>
+				</div>
+			</div>
+			<nav class="menu" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<ul class="menu__list">
+	</ul>
+</nav>
+		</header>
+		<div class="wrapper clearfix">
+
+<div class="main-content content" role="main" itemprop="mainContentOfPage">
+	<article class="post">
+		<header class="post__header clearfix">
+			<h1 class="post__title">Pythons HOWTO之属性描述符</h1>
+			<p class="post__meta meta">
+				<svg class="icon icon-time" height="14" viewBox="0 0 16 16" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+				<time class="post__meta-date" datetime="2015-08-08 22:27:41 &#43;0800 CST">August 08, 2015</time>
+				<span class="post__meta-categories meta-categories">
+					<svg class="icon icon-category" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+					<a class="meta-categories__link" href="/categories/python" rel="category">Python</a></span>
+			</p>
+		</header>
+		<div class="post__content clearfix">
+			<p>今天开个新坑，Pythons HOWTOS系列，主要是对官方文档的翻译。由于英语水平有限，基本上都是意译。这里附上<a href="https://docs.python.org/2.7/howto/index.html">链接</a>。</p>
+
+<p>本篇是第一篇，主要说的是<a href="https://docs.python.org/2.7/howto/descriptor.html#id2">属性描述符</a>。</p>
+
+<p></p>
+
+<h2 id="摘要">摘要</h2>
+
+<p>本篇的内容主要是定义属性描述符(descriptor)，概述一下描述符协议的内容。通过自定义的的一个描述符和Python内建的描述符(functions, properties, static methods, class methods)来演示属性描述符是如何调用的。同时会给出相同功能的Python实现代码和一个简单的程序。</p>
+
+<p>属性描述符不仅给一个大的工具集(暂时没发现是什么)提供了接口，它还能加深理解Python的工作原理和优雅的设计思想。</p>
+
+<h2 id="定义和介绍">定义和介绍</h2>
+
+<p>一般来说，一个描述符是一个有“绑定行为”的对象属性，这个属性访问被描述符协议中的方法所覆盖。这些方法是__get__()，__set__()和__delete__()。如果某个对象定义了其中一个，那么这个对象就可以被叫做描述符。</p>
+
+<p>访问属性默认通过get，set或者是delete来操作对象属性字典来实现。例如，a.x有一个查找队列，从a.__dict__[&lsquo;x&rsquo;]开始，然后是type(a).__dict__[&lsquo;x&rsquo;]，接着是type(a)的基类(metaclass除外)，以此类推。如果查找的是一个定义了描述符方法的对象，那么Python会覆盖默认行为而去调用描述符方法。发生在优先级队列的哪个位置取决于定义的描述符方法。注意，属性描述符只适用于新式类(从object或者typ继承的类)。</p>
+
+<p>属性描述符是一个强大的通用协议。它是properties, methods, static methods, class methods 和super()的调用原理。它贯穿整个Python，并且用来实现2.2版本中引进的新式类。属性描述符简化了底层的C代码，还为日常Python编程提供了新的工具集。</p>
+
+<h2 id="描述符协议">描述符协议</h2>
+
+<pre><code class="language-python">descr.__get__(self, obj, type=None) --&gt; value
+
+descr.__set__(self, obj, value) --&gt; None
+
+descr.__delete__(self, obj) --&gt; None
+</code></pre>
+
+<p>上面的三个方法就是协议的全部内容了。定义其中任意一个方法的对象就被称为属性描述符，能够覆盖默认的属性查找规则。</p>
+
+<p>如果一个对象同时定义了__get__和__set__方法，它被称做数据描述符(data descriptor)。只定义__get__方法的对象则被称为非数据描述符(non-data descriptor，一般用在函数方法上，其他用法也是可能的)。</p>
+
+<p>数据和非数据描述符的区别在于如果某个实例属性字典中有项和描述符同名，那么属性访问的优先级是不同的。数据描述符的优先级比实例字典中项的高，非数据描述符则相反。</p>
+
+<p>举个例子说明一下优先级问题:</p>
+
+<pre><code class="language-python">class DataDesc(object):
+
+    def __init__(self, name=None):
+        self.name = name
+        self.value = None
+
+    def __get__(self, obj, type=None):
+        return self.value
+
+    def __set__(self, obj, value):
+        self.value = value
+
+
+class NonDataDesc(object):
+
+    def __init__(self, name=None):
+        self.name = name
+        self.value = None
+
+    def __get__(self, obj, type=None):
+        return self.value
+
+
+class DataTest(object):
+    x = DataDesc()
+
+
+class NonDataTest(object):
+    x = NonDataDesc()
+
+&gt;&gt;&gt; d = DataTest()
+&gt;&gt;&gt; nd = NonDataTest()
+&gt;&gt;&gt; d.__dict__['x'] = 2
+&gt;&gt;&gt; nd.__dict__['x'] = 2
+&gt;&gt;&gt; print d.__dict__, nd.__dict__
+{'x': 2} {'x': 2}
+&gt;&gt;&gt; print d.x, nd.x
+None 2
+</code></pre>
+
+<p>如果想要构造一个只读的数据描述符，同时定义__get__和__set__方法，并且__set__调用时引发一个AtrributeError异常。</p>
+
+<h2 id="属性描述符调用">属性描述符调用</h2>
+
+<p>一个属性描述符可以通过它的方法名直接调用。比如，d.__get__(obj)。更常见的方式是通过属性访问自动调用。比如，obj.d在obj的字典中查找d。如果d定义了__get__()，那么根据下文将要提到的优先级规则，d.__get__(obj)将会被调用。</p>
+
+<p>调用的细节由obj是对象还是类来决定。</p>
+
+<p>对于对象，访问是调用object.__getattribute__()，其中将b.x转换成type(b).__dict__[&lsquo;x&rsquo;].__get__(b, type(b))。在实现中，数据描述符优先级最高，依次是实例变量，非数据描述符，最后是__getattr__()(如果定义了)。C实现能够在<a href="https://hg.python.org/cpython/file/2.7/Objects/object.c">Objects/object.c</a>中的<a href="https://docs.python.org/2.7/c-api/object.html#c.PyObject_GenericGetAttr">PyObject_GenericGetAttr()</a>找到。</p>
+
+<p>对于类，访问是调用type.__getattribute__()，其中将B.x转换成B.__[&lsquo;x&rsquo;].__get__(None, B)。如果用Python实现，它是这样的：</p>
+
+<pre><code class="language-python">def __getattribute__(self, key):
+    &quot;Emulate type_getattro() in Objects/typeobject.c&quot;
+    v = object.__getattribute__(self, key)
+    if hasattr(v, '__get__'):
+       return v.__get__(None, self)
+    return v
+</code></pre>
+
+<p>需要记住下面几个重要的点:</p>
+
+<ol>
+<li>描述符通过__getattribute__()被调用</li>
+<li>重写__getattribute__()能够改变自动的调用</li>
+<li>__getattribute__()只适用于新式类</li>
+<li>object.__getattribute__()和type.__getattribute__()调用__get__()的方式不同</li>
+<li>数据描述符总是覆盖实例字典</li>
+<li>非数据描述符可能被实例字典覆盖</li>
+</ol>
+
+<p>super()返回的对象有一个自定义的__getattribute__()。调用super(B, obj).m()在obj.__class__.__mro__查找到紧跟在B后面的基类A，然后返回A.__dict__[&rsquo;m&rsquo;].__get__(obj, B)。如果不是一个描述符，m被原封不动的返回。如果不在字典中，m转而去调用object.__getattribute__()查找。</p>
+
+<p>注意，在Python2.2中，运行super(B, obj).m()时，如果m是一个数据描述符，将会只调用__get__()。在Python2.3中，除了是旧式类，非数据描述符也会得到调用。具体实现在<a href="https://hg.python.org/cpython/file/2.7/Objects/typeobject.c">Objects/typeobject.c</a>的super_getattro()中。</p>
+
+<p>综上所述，描述符机制嵌入到了object、type和super()的__getattribute__()方法中。如果类需要这个机制，必须继承自object或者是有metaclass提供类似的功能。同样的，也可以通过重写__getattribute__()来改变属性描述符。</p>
+
+<h2 id="属性描述符示例">属性描述符示例</h2>
+
+<p>下面的代码创建了一个类，它的实例对象是数据描述符，get和set方法中都打印了一条信息。重写__getattribute__()方法也可以做到这个。但是，使用描述符对监控一些属性很有用：</p>
+
+<pre><code class="language-python">class RevealAccess(object):
+    &quot;&quot;&quot;A data descriptor that sets and returns values
+       normally and prints a message logging their access.
+    &quot;&quot;&quot;
+
+    def __init__(self, initval=None, name='var'):
+        self.val = initval
+        self.name = name
+
+    def __get__(self, obj, objtype):
+        print 'Retrieving', self.name
+        return self.val
+
+    def __set__(self, obj, val):
+        print 'Updating', self.name
+        self.val = val
+
+&gt;&gt;&gt; class MyClass(object):
+    x = RevealAccess(10, 'var &quot;x&quot;')
+    y = 5
+
+&gt;&gt;&gt; m = MyClass()
+&gt;&gt;&gt; m.x
+Retrieving var &quot;x&quot;
+10
+&gt;&gt;&gt; m.x = 20
+Updating var &quot;x&quot;
+&gt;&gt;&gt; m.x
+Retrieving var &quot;x&quot;
+20
+&gt;&gt;&gt; m.y
+5
+</code></pre>
+
+<h2 id="properties">Properties</h2>
+
+<p>使用property()能够把数据描述符变成属性调用。形式如下:</p>
+
+<pre><code class="language-python">property(fget=None, fset=None, fdel=None, doc=None) -&gt; property attribute
+</code></pre>
+
+<p>一个典型的用法：</p>
+
+<pre><code class="language-python">class C(object):
+    def getx(self): return self.__x
+    def setx(self, value): self.__x = value
+    def delx(self): del self.__x
+    x = property(getx, setx, delx, &quot;I'm the 'x' property.&quot;)
+</code></pre>
+
+<p>也可以使用装饰器:</p>
+
+<pre><code class="language-python">class C(object):
+  @property
+  def x(self):
+    return self.__x
+
+  @x.setter
+  def setx(self, value):
+    self.__x = value
+
+  @x.deleter
+  del delx(self):
+    self.__x
+
+&gt;&gt;&gt; c = C()
+&gt;&gt;&gt; c.x = 2
+&gt;&gt;&gt; c.x
+2
+&gt;&gt;&gt; del c.x
+</code></pre>
+
+<p>proptery()是C实现的，我们这里给出Python版本的等价实现：</p>
+
+<pre><code class="language-python">class Property(object):
+    &quot;Emulate PyProperty_Type() in Objects/descrobject.c&quot;
+
+    def __init__(self, fget=None, fset=None, fdel=None, doc=None):
+        self.fget = fget
+        self.fset = fset
+        self.fdel = fdel
+        if doc is None and fget is not None:
+            doc = fget.__doc__
+        self.__doc__ = doc
+
+    def __get__(self, obj, objtype=None):
+        if obj is None:
+            return self
+        if self.fget is None:
+            raise AttributeError(&quot;unreadable attribute&quot;)
+        return self.fget(obj)
+
+    def __set__(self, obj, value):
+        if self.fset is None:
+            raise AttributeError(&quot;can't set attribute&quot;)
+        self.fset(obj, value)
+
+    def __delete__(self, obj):
+        if self.fdel is None:
+            raise AttributeError(&quot;can't delete attribute&quot;)
+        self.fdel(obj)
+
+    def getter(self, fget):
+        return type(self)(fget, self.fset, self.fdel, self.__doc__)
+
+    def setter(self, fset):
+        return type(self)(self.fget, fset, self.fdel, self.__doc__)
+
+    def deleter(self, fdel):
+        return type(self)(self.fget, self.fset, fdel, self.__doc__)
+</code></pre>
+
+<p>一个电子表格类可能通过Cell(&lsquo;b10&rsquo;).value访问某个单元，后面希望改进成每次访问都重新计算。但是开发者不想直接改变现有的属性访问代码。那么便可以用proptery数据描述符封装属性访问。</p>
+
+<pre><code class="language-python">class Cell(object):
+    . . .
+    def getvalue(self, obj):
+        &quot;Recalculate cell before returning value&quot;
+        self.recalc()
+        return obj._value
+    value = property(getvalue)
+</code></pre>
+
+<h2 id="functions-and-methods">Functions and methods</h2>
+
+<p>Python的面向对象特征是建立在基于函数的环境上。使用非数据描述符，两者能够无缝融合。</p>
+
+<p>类字典中用函数(function)形式存储方法(method)。在类的定义中，用def和lambda定义方法，这也是定义函数的方式。方法和普通函数唯一的区别是方法的第一个参数预留给了对象实例。按照Python的惯例，实例引用一般用self表示，当然也有可能用this或者其他变量表示。</p>
+
+<p>为了支持方法调用，函数中包含了__get__()属性。这意味着，所有的函数都是非数据描述符。对象和类的方法，__get__()返回值是不同的，分别绑定(bound)和非绑定(unbound)方法。如果用纯Python表示，可能是这样的:</p>
+
+<pre><code class="language-python">class Function(object):
+    . . .
+    def __get__(self, obj, objtype=None):
+        &quot;Simulate func_descr_get() in Objects/funcobject.c&quot;
+        return types.MethodType(self, obj, objtype)
+</code></pre>
+
+<pre><code class="language-python">&gt;&gt;&gt; class D(object):
+     def f(self, x):
+          return x
+
+&gt;&gt;&gt; d = D()
+&gt;&gt;&gt; D.__dict__['f'] # Stored internally as a function
+&lt;function f at 0x00C45070&gt;
+&gt;&gt;&gt; D.f             # Get from a class becomes an unbound method
+&lt;unbound method D.f&gt;
+&gt;&gt;&gt; d.f             # Get from an instance becomes a bound method
+&lt;bound method D.f of &lt;__main__.D object at 0x00B18C90&gt;&gt;
+</code></pre>
+
+<p>bound和unbound方法是两个不同的类型。C实现中只是一个相同的对象的两种不同表现，区别就在于im_self被设置了或者是NULL值，具体实现位于<a href="https://hg.python.org/cpython/file/2.7/Objects/classobject.c">Objects/classobject.c</a>中<a href="https://docs.python.org/2.7/c-api/method.html#c.PyMethod_Type">PyMethod_Type</a>。</p>
+
+<p>同样地，调用方法时有没有im_self效果是不同的。如果被设置了，表明是bound方法，原始函数(存在im_func中)被调用，当然第一个参数被设置成对象实例。如果是unbound方法，所有参数原封不动地传给原始函数。C实现instancemethod_call()会更加复杂，因为有很多类型检测。</p>
+
+<h2 id="static-methods-and-class-methods">Static methods and class methods</h2>
+
+<p>函数有__get__()属性，所以当它们被当成属性访问时会被转变成方法。非数据描述符将obj.f(*args)转换成了f(obj, *args)。调用klass.f(*args)变成了f(*args)。</p>
+
+<p>下面这个表格总结了这转变方式，以及两个变种staticmethod和classmethod。</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Transformation</th>
+<th align="left">Called from an Object</th>
+<th align="left">Called from a Class</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">function</td>
+<td align="left">f(obj, *args)</td>
+<td align="left">f(*args)</td>
+</tr>
+
+<tr>
+<td align="left">staticmethod</td>
+<td align="left">f(*args)</td>
+<td align="left">f(*args)</td>
+</tr>
+
+<tr>
+<td align="left">classmethod</td>
+<td align="left">f(type(obj), *args)</td>
+<td align="left">f(klass, *args)</td>
+</tr>
+</tbody>
+</table>
+
+<p>静态方法没有对函数做任何改变。调用c.f等价于object.__getattribute__(c, &ldquo;f&rdquo;)，调C.f等于object.__getattribute__(C, &ldquo;f&rdquo;)。所以，对象和类对静态方法的调用方式是统一的。静态方法不需要self。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; class E(object):
+     def f(x):
+          print x
+     f = staticmethod(f)
+
+&gt;&gt;&gt; print E.f(3)
+3
+&gt;&gt;&gt; print E().f(3)
+3
+</code></pre>
+
+<p>纯Pythond的staticmethod()实现可能是这样的:</p>
+
+<pre><code class="language-python">class StaticMethod(object):
+ &quot;Emulate PyStaticMethod_Type() in Objects/funcobject.c&quot;
+
+ def __init__(self, f):
+      self.f = f
+
+ def __get__(self, obj, objtype=None):
+      return self.f
+</code></pre>
+
+<p>而类方法的第一个参数是类的引用。也是分为对象调用和类调用。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; class E(object):
+     def f(klass, x):
+          return klass.__name__, x
+     f = classmethod(f)
+
+&gt;&gt;&gt; print E.f(3)
+('E', 3)
+&gt;&gt;&gt; print E().f(3)
+('E', 3)
+</code></pre>
+
+<p>如果函数只需要类引用而不关心底层的数据，那么类方法就会很有用。一个使用classmethod的例子是创建类构造器。在Python2.3中dict.fromkeys()从关键字列表中创建一个新的字典。纯Python可能是这样的：</p>
+
+<pre><code class="language-python">class Dict(object):
+    . . .
+    def fromkeys(klass, iterable, value=None):
+        &quot;Emulate dict_fromkeys() in Objects/dictobject.c&quot;
+        d = klass()
+        for key in iterable:
+            d[key] = value
+        return d
+    fromkeys = classmethod(fromkeys)
+
+&gt;&gt;&gt; Dict.fromkeys('abracadabra')
+{'a': None, 'r': None, 'b': None, 'c': None, 'd': None}
+</code></pre>
+
+<p>classmethod的纯Python实现可能是这样的：</p>
+
+<pre><code class="language-python">class ClassMethod(object):
+     &quot;Emulate PyClassMethod_Type() in Objects/funcobject.c&quot;
+
+     def __init__(self, f):
+          self.f = f
+
+     def __get__(self, obj, klass=None):
+          if klass is None:
+               klass = type(obj)
+          def newfunc(*args):
+               return self.f(klass, *args)
+          return newfunc
+</code></pre>
+
+<p>终于结束了，这篇断断续续的翻译了好几天，几次都想放弃了，但还是忍着翻译了下来，算是收获了许多。学习是没有捷径的。</p>
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="m4.73135 3.3795002q0-.5597-.39604-.9557-.39604-.3961-.95577-.3961-.55974 0-.95578.3961-.39604.396-.39604.9557 0 .5598.39604.9558.39604.3961.95578.3961.55973 0 .95577-.3961.39604-.396.39604-.9558zm11.26865 6.0832q0 .5596998-.39076.9504998l-5.18548 5.196q-.41188.3908-.9610504.3908-.55974 0-.9505-.3908l-7.5511496-7.5616998q-.40132-.3907-.68119-1.0666-.27987-.6759-.27987-1.2357v-4.3934q0-.54920004.40132-.95050004.40132-.4013.9505-.4013h4.39339q.55974 0 1.23565.2799.67591.2798 1.07723.6812l7.55115 7.54060004q.39076.4118.39076.961z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link" href="/tags/python/" rel="tag">Python</a></li>
+	</ul>
+</div>
+
+	</article>
+	
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Sung Yung avatar" src="/img/sy.jpg" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Sung Yung</span>
+	</div>
+	<div class="authorbox__description">
+		一枚Pythoner，热爱编程，喜欢新东西（当然女朋友不用）。
+	</div>
+</div>
+	
+<nav class="post-nav row clearfix" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<div class="post-nav__item post-nav__item--prev col-1-2">
+		<a class="post-nav__link" href="/post/python-decorate/" rel="prev"><span class="post-nav__caption">«Previous</span><p class="post-nav__post-title">Python装饰器的几种类型</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next col-1-2">
+		<a class="post-nav__link" href="/post/swift-tempurl/" rel="next"><span class="post-nav__caption">Next»</span><p class="post-nav__post-title">Openstack Swift tempurl 和 largeobject 支持</p></a>
+	</div>
+</nav>
+
+	
+</div>
+
+<aside class="sidebar" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+	
+<div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="//google.com/search">
+		<label>
+			<span class="screen-reader-text">Search for:</span>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+	
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/python-property/">Python Week 0001 --- property</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/swift-tempurl/">Openstack Swift tempurl 和 largeobject 支持</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-howto-descriptor/">Pythons HOWTO之属性描述符</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-decorate/">Python装饰器的几种类型</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-bibao/">Python闭包的作用域理解</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-twisted01/">Twisted源码分析系列01-reactor</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-with/">浅谈Python的with语句(转载)</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-future/">Python __future__ 模块</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/pass/">PaaS以及开源PaaS平台</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/cloudfoundry/">深入CloudFoundry一周年（转载）</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/python">Python</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/python-everyweek">Python-Everyweek</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e4%ba%91%e8%ae%a1%e7%ae%97">云计算</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%85%b6%e4%bb%96">其他</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget__link widget__link--taglist" href="/tags/python" title="python">python</a>
+	</div>
+</div>
+</aside>
+	</div>
+		<footer class="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div class="container container-inner">
+				<p class="footer__copyright">&copy; 2017 Sung Yung. Based on <a href="//wordpress.org/themes/mh-magazine-lite/" target="_blank" rel="nofollow noopener noreferrer">MH Magazine lite</a>.</p>
+			</div>
+		</footer>
+	</div>
+
+<script>
+	var navigation = responsiveNav(".menu", {
+		navClass: "menu--collapse",
+	});
+</script>
+
+</body>
+</html>
