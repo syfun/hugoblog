@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaaS以及开源PaaS平台</title>
+<meta name="description" content=" Sung Yung&#39;s Personal blog about everything">
+<meta name="generator" content="Hugo 0.19" />
+<meta property="og:title" content="PaaS以及开源PaaS平台" />
+<meta property="og:description" content="一、什么是IaaS, PaaS和SaaS及其区别
+
+任何一个在互联网上提供其服务的公司都可以叫做云计算公司。其实云计算分几层的，
+ 分别是Infrastructure（基础设施）-as-a- Service，Platform（平台）-as-a-Service，
+ Software（软件）-as-a-Service。基础设施在最下端，平台在 中间，软件在顶端。
+ 别的一些“软”的层可以在这些层上面添加。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/pass/" />
+
+
+
+<meta property="article:published_time" content="2015-06-26T22:12:41&#43;08:00"/>
+<meta property="article:modified_time" content="2015-06-26T22:12:41&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+<script type="text/javascript" src="/js/scripts.js"></script>
+</head>
+<body class="body body-right-sidebar mobile" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+	<div class="container container-outer">
+		<header class="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div class="container container-inner clearfix">
+				<div class="logo" role="banner" itemscope="itemscope" itemtype="http://schema.org/Brand">
+					<a class="logo__link" href="/" title="Sung Yung" rel="home">
+						<h1 class="logo__title">Sung Yung</h1>
+						<h2 class="logo__tagline">人生苦短，我爱Python</h2>
+					</a>
+				</div>
+			</div>
+			<nav class="menu" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<ul class="menu__list">
+	</ul>
+</nav>
+		</header>
+		<div class="wrapper clearfix">
+
+<div class="main-content content" role="main" itemprop="mainContentOfPage">
+	<article class="post">
+		<header class="post__header clearfix">
+			<h1 class="post__title">PaaS以及开源PaaS平台</h1>
+			<p class="post__meta meta">
+				<svg class="icon icon-time" height="14" viewBox="0 0 16 16" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+				<time class="post__meta-date" datetime="2015-06-26 22:12:41 &#43;0800 CST">June 26, 2015</time>
+				<span class="post__meta-categories meta-categories">
+					<svg class="icon icon-category" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+					<a class="meta-categories__link" href="/categories/%e4%ba%91%e8%ae%a1%e7%ae%97" rel="category">云计算</a></span>
+			</p>
+		</header>
+		<div class="post__content clearfix">
+			<h2 id="一-什么是iaas-paas和saas及其区别">一、什么是IaaS, PaaS和SaaS及其区别</h2>
+
+<p>任何一个在互联网上提供其服务的公司都可以叫做云计算公司。其实云计算分几层的，
+ 分别是Infrastructure（基础设施）-as-a- Service，Platform（平台）-as-a-Service，
+ Software（软件）-as-a-Service。基础设施在最下端，平台在 中间，软件在顶端。
+ 别的一些“软”的层可以在这些层上面添加。</p>
+
+<p></p>
+
+<p><img src="/img/iaas-paas-saas.jpg" alt="IaaS-PaaS-SaaS" /></p>
+
+<h3 id="iaas-infrastructure-as-a-service-基础设施即服务">IaaS: Infrastructure-as-a-Service（基础设施即服务）</h3>
+
+<p>第一层叫做IaaS，有时候也叫做Hardware-as-a-Service，几年前如果你想在办公室或
+ 者公司的网站上运行一些企业应用，你需要去买服务器，或者别的高昂的硬件来控制本地应用，
+ 让你的业务运行起来。</p>
+
+<p>但是现在有IaaS，你可以将硬件外包到别的地方去。IaaS公司会提供场外服务器，存储和网络硬件，
+你可以租用。节省了维护成本和办公场地，公司可以在任何时候利用这些硬件来运行其应用。</p>
+
+<p>一些大的IaaS公司包括Amazon, Microsoft, VMWare, Rackspace和Red Hat.不过这些公司又都有自
+己的专长，比如Amazon和微软给你提供的不只是IaaS，他们还会将其计算能力出租给你来host你的网站。</p>
+
+<h3 id="paas-platform-as-a-service-平台即服务">PaaS: Platform-as-a-Service（平台即服务）</h3>
+
+<p>第二层就是所谓的PaaS，某些时候也叫做中间件。你公司所有的开发都可以在这一层进行，节省了时间和资源。</p>
+
+<p>PaaS公司在网上提供各种开发和分发应用的解决方案，比如虚拟服务器和操作系统。这节省了你在硬件上的费用，
+也让分散的工作室之间的合作变得更加容易。网页应用管理，应用设计，应用虚拟主机，存储，安全以及应用开发协作工具等。</p>
+
+<h3 id="saas-software-as-a-service-软件即服务">SaaS: Software-as-a-Service（软件即服务）</h3>
+
+<p>第三层也就是所谓SaaS。这一层是和你的生活每天接触的一层，大多是通过网页浏览器来接入。任何一个远程服务器
+上的应用都可以通过网络来运行，就是SaaS了。</p>
+
+<p>你消费的服务完全是从网页如Netflix, MOG, Google Apps, Box.net, Dropbox或者苹果的iCloud那里进入这些分类。
+尽管这些网页服务是用作商务和娱乐或者两者都有，但这也算是云技术的一部分。</p>
+
+<h2 id="二-paas">二、PaaS</h2>
+
+<p>PaaS是Platform-as-a-Service的缩写，意思是平台即服务。把服务器平台作为一种服务提供的商业模式。
+通过网络进行程序提供的服务称之为SaaS，而云计算时代相应的服务器平台或者开发环
+境作为服务进行提供就成为了PaaS。</p>
+
+<p>所谓PaaS实际上是指将软件研发的平台作为一种服务，以SaaS的模式提交给用户。因此，PaaS也是SaaS模式的一种应用。但是，PaaS的出现可以加快SaaS的发展，尤其是加快SaaS应用的开发速度。
+在2007年国内外SaaS厂商先后推出自己的PAAS平台。</p>
+
+<h3 id="作用">作用</h3>
+
+<p>PaaS之所以能够推进SaaS的发展，主要在于它能够提供企业进行定制化研发的中间件平台，同时涵盖数据库和应用服务器等。PaaS可以提高在Web平台上利用的资源数量。例如，可通过远程Web服务使用数据即服务（Data-as-a-Service：数据即服务），还可以使用可视化的API，甚至像800app的PaaS平台还允许你混合并匹配适合你应用的其他平台。用户或者厂商基于PaaS平台可以快速开发自己所需要的应用和产品。同时，PaaS平台开发的应用能更好地搭建基于SOA架构的企业应用。</p>
+
+<p>此外，PaaS对于SaaS运营商来说，可以帮助他进行产品多元化和产品定制化。例如Salesforce的PaaS平台让更多的ISV成为其平台的客户，从而开发出基于他们平台的多种SaaS应用，使其成为多元化软件服务供货商（Multi Application Vendor），而不再只是一家CRM随选服务提供商。而国内的SaaS厂商800app通过PaaS平台，改变了仅是CRM供应商的市场定位，实现了 BTO(Built to order:按订单生产)，和在线交付流程。使用800app的PAAS开发平台，用户不再需要任何编程即可开发包括CRM、OA、HR、SCM、进销存管理等任何企业管理软件，而且不需要使用其他软件开发工具并立即在线运行。
+面向个人的EC站点(electronic commerce site)的巨头公司Amazon，把最初为了自己公司的运营用的构筑起来的系统平台，进行出租，用户可以自由选择操作系统和中间软件，以这样的方式提供硬件以及软件平台作为服务，最初被海外以一些冒险事业的企业所使用。从2006年开始 Amazon EC Amazon S3开始作为服务推向市场。</p>
+
+<p>还有现代软件业霸主同时又是次时代计算的先驱的Google,大家都知道在世界上构筑以及运行了非常多的数据中心。以搜索引擎以及新的广告模式而闻名。他们使用便宜的计算机和强有力的中间件，以及自己的技术装备出了世界上最强大的数据中心，以及超高性能的并行计算群。2008年4月发表的PaaS服务Google App Engine和Amazon 的 EC2,S3,SimpleDB等服务拥有相似的功能。这些稳定的平台上同样搜索引擎，GMail等服务也在运行。同样以ASP~SaaS成功的Salesforce，2007年开始用于提供SaaS的系统基盘对外公开，用Force这个名称开始进入PaaS业务。他所提供的PaaS服务里采用Java类似的语言Apex以及Eclipse开发平台，整合的开发环境也作为服务进行提供(Development as a Service)。Google/Amazon/Salesforce这三个软件巨头非常的重视PaaS这种新的商业模式，Amazon的PaaS服务为了用户可以自由的组合服务提供了更多的自由度，Google的话提供了更多的服务使用户能够方便的使用，去掉了一些繁琐的作业。Google/Salesforce的PaaS不仅是基础硬件的提供开发环境的同样被提供属于真正的平台作为一种服务(PaaS)</p>
+
+<h3 id="特点">特点</h3>
+
+<p>PaaS能将现有各种业务能力进行整合，具体可以归类为应用服务器、业务能力接入、业务引擎、业务开放平台，向下根据业务能力需要测算基础服务能力，通过IaaS提供的API调用硬件资源，向上提供业务调度中心服务，实时监控平台的各种资源，并将这些资源通过API开放给SaaS用户。PaaS主要具备以下三个特点:</p>
+
+<p>(1)平台即服务：PaaS所提供的服务与其他的服务最根本的区别是PaaS提供的是一个基础平台，而不是某种应用。在传统的观念中，平台是向外提供服务的基础。一般来说，平台作为应用系统部署的基础，是由应用服务提供商搭建和维护的，而PaaS颠覆了这种概念，由专门的平台服务提供商搭建和运营该基础平台，并将该平台以服务的方式提供给应用系统运营商；</p>
+
+<p>(2)平台及服务：PaaS运营商所需提供的服务，不仅仅是单纯的基础平台，而且包括针对该平台的技术支持服务，甚至针对该平台而进行的应用系统开发、优化等服务。PaaS的运营商最了解他们所运营的基础平台，所以由PaaS运营商所提出的对应用系统优化和改进的建议也非常重要。而在新应用系统的开发过程中，PaaS运营商的技术咨询和支持团队的介入，也是保证应用系统在以后的运营中得以长期、稳定运行的重要因素;</p>
+
+<p>(3)平台及服务：PaaS运营商对外提供的服务不同于其他的服务，这种服务的背后是强大而稳定的基础运营平台，以及专业的技术支持队伍。这种“平台级”服务能够保证支撑SaaS或其他软件服务提供商各种应用系统长时间、稳定的运行。PaaS的实质是将互联网的资源服务化为可编程接口，为第三方开发者提供有商业价值的资源和服务平台。有了PaaS平台的支撑，云计算[2] 的开发者就获得了大量的可编程元素，这些可编程元素有具体的业务逻辑，这就为开发带来了极大的方便，不但提高了开发效率，还节约了开发成本。有了PaaS平台的支持，WEB应用的开发变得更加敏捷，能够快速响应用户需求的开发能力，也为最终用户带来了实实在在的利益。</p>
+
+<h2 id="三-开源paas平台">三、开源PaaS平台</h2>
+
+<p>开源平台即服务（PaaS）让广大开发人员和用户可以贡献及共享源代码和扩展件。有的PaaS由厂商驱动，有的则基于标准。</p>
+
+<p>厂商驱动的开源PaaS让广大开发人员和用户被某家厂商牢牢锁定。说到将应用程序从厂商驱动的开源平台传送到另一个平台，开发人员在这方面的控制权很有限。</p>
+
+<p>基于标准的开放平台则与厂商无关，比较灵活；它旨在对生命周期管理的自动化过程的编排实现标准化。开发人员可以跨云传送应用程序。</p>
+
+<p>下面不妨看一下五种流行的开源平台。请注意：并非所有这些平台都与OpenStack协同运行。</p>
+
+<h3 id="厂商驱动的开源paas">厂商驱动的开源PaaS</h3>
+
+<p><strong>Cloud Foundry</strong>（原先由VMware开发）从广大Ruby开发人员和用户处获得源代码。这个开源PaaS允许人们将信息系统部署到OpenStack、亚马逊网络服务（AWS）、vSphere、vCloud Air和vCloud Director。Cloud Foundry提供的主机托管服务包括：MySQL（可用于开发SaaS应用程序）、MongoDB（一种NoSQL数据库）和RabbitMQ（以异步方式连接应用程序的消息代理）。为了简化任务，PaaS开发人员获得诸多工具，比如命令行工具、Eclipse插件、构建整合工具以及应用程序扩展工具。与Cloud Foundry竞争的平台还有AppScale、Heroku、OpenShift和谷歌应用引擎（Google App Engine）。注意：2014年12月9日，Cloud Foundry基金会宣布，它将作为一个Linux基金会协作项目来加以管理。</p>
+
+<p><strong>OpenShift</strong>（红帽）在私有云（OpenShift Enterprise）、公有云（OpenShift Online）和上游社区（通过OpenShift Origin项目）中运行。OpenShift托管运行MySQL和MongoDB；OpenShift支持的其他数据库包括PostgreSQL和微软SQL。这个开源PaaS在红帽企业级Linux上运行，为你提供了一套客户（命令）工具集。你可以使用JavaScript、Ruby、Python、PHP、Perl和Java。OpenShift在OpenStack上运行。</p>
+
+<p><strong>Stackato</strong>（ActiveState）是基于Cloud Foundry的PaaS。你可以从Stackato的应用程序商店选择开源项目，而不是贡献源代码。你可以浏览用各种语言和框架编写而成的众多开源项目。为了快速部署，你只要点击某个项目。</p>
+
+<p>如果你很好奇，可以查看某个项目的源代码，看看它是如何构建的。你可以决定是定制项目，还是使用自己的应用程序。</p>
+
+<p>Stackato有三个版本可用：</p>
+
+<p><strong>Stackato Micro Cloud</strong>：假设你想把应用程序部署到桌面虚拟机上，或者在亚马逊EC2沙盒上试一试Micro Cloud。你仅限于4 GB内存、单一节点和基于社区的支持。</p>
+
+<p><strong>Stackato Cluster</strong>：假设你是小型团队的负责人，想构建小型集群，把应用程序部署到自己的基础设施上或公有云上。你仅限于20 GB内存和基于社区的支持。你想要多少个节点，就可以有多少个节点。</p>
+
+<p><strong>Stackato Enterprise</strong>：假设贵企业想把应用程序部署到虚拟机管理程序或基础设施即服务（IaaS）上，同时可充分利用自动扩展的优点。它提供了配置和生产支持，有服务级别协议（SLA）作为保障。</p>
+
+<p>你可以将Stackato与OpenStack、vSphere、CloudStack、XenServer、KVM、HP Cloud Services和AWS结合使用。</p>
+
+<p>2013年6月，Apache Stratos（由WSO2捐献）作为一种开源PaaS捐献给了Apache。它可以与许多应用服务器、数据库、语言、甚至遗留系统协同运行。你可以设置分区来控制IaaS资源。WSO2 App Factory可以帮助你加快PaaS上的生命周期迭代。</p>
+
+<p>这个平台的贡献者包括来自SUSE、思科、思杰、美国宇航局喷气推进实验室（JPL）、Sungard和Engine Yard的开发人员。你可以将Stratos与AWS、OpenStack和vCloud结合使用。、</p>
+
+<h3 id="基于标准的开源paas">基于标准的开源PaaS</h3>
+
+<p><strong>Cloudify</strong>（GigaSpaces）基于OASIS TOSCA（云应用程序的拓扑结构和编排规范）的草案版本。这项与厂商无关的标准的技术委员会成立于2012年。标准的发起者包括冠群、华为、IBM、NetApp、红帽和SAP。</p>
+
+<p>这项标准并不依赖任何一家厂商的技术（比如虚拟机管理程序虚拟化）就可以运行开源PaaS；它描述应用程序的拓扑结构是工作流程的基础，工作流程反过来充当策略的基本构建模块。</p>
+
+<p>该标准可以处理开发人员手动执行下列任务时所犯的严重错误：</p>
+
+<p>设置监控警报；</p>
+
+<p>执行部署策略；</p>
+
+<p>收集并分析日志；以及对照SLA中的服务可用性保障，衡量性能。</p>
+
+<p>为了消除人员的干预工作，该标准旨在帮助PaaS开发人员将生命周期实现自动化，包括跨云的部署、扩展、补丁、监控和补救。构建并使用开发人员可以使用的云服务模块库，就能实现自动化。</p>
+
+<p>你可以使用PaaS来测试自动化和编排流程执行起来多顺畅。Cloudify可以在OpenStack、AWS、CloudStack、微软Azure和VMware上实现自动部署。</p>
+		</div>
+		
+
+	</article>
+	
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Sung Yung avatar" src="/img/sy.jpg" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Sung Yung</span>
+	</div>
+	<div class="authorbox__description">
+		一枚Pythoner，热爱编程，喜欢新东西（当然女朋友不用）。
+	</div>
+</div>
+	
+<nav class="post-nav row clearfix" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<div class="post-nav__item post-nav__item--prev col-1-2">
+		<a class="post-nav__link" href="/post/cloudfoundry/" rel="prev"><span class="post-nav__caption">«Previous</span><p class="post-nav__post-title">深入CloudFoundry一周年（转载）</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next col-1-2">
+		<a class="post-nav__link" href="/post/python-future/" rel="next"><span class="post-nav__caption">Next»</span><p class="post-nav__post-title">Python __future__ 模块</p></a>
+	</div>
+</nav>
+
+	
+</div>
+
+<aside class="sidebar" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+	
+<div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="//google.com/search">
+		<label>
+			<span class="screen-reader-text">Search for:</span>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+	
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/python-property/">Python Week 0001 --- property</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/swift-tempurl/">Openstack Swift tempurl 和 largeobject 支持</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-howto-descriptor/">Pythons HOWTO之属性描述符</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-decorate/">Python装饰器的几种类型</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-bibao/">Python闭包的作用域理解</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-twisted01/">Twisted源码分析系列01-reactor</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-with/">浅谈Python的with语句(转载)</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-future/">Python __future__ 模块</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/pass/">PaaS以及开源PaaS平台</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/cloudfoundry/">深入CloudFoundry一周年（转载）</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/python">Python</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/python-everyweek">Python-Everyweek</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e4%ba%91%e8%ae%a1%e7%ae%97">云计算</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%85%b6%e4%bb%96">其他</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget__link widget__link--taglist" href="/tags/python" title="python">python</a>
+	</div>
+</div>
+</aside>
+	</div>
+		<footer class="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div class="container container-inner">
+				<p class="footer__copyright">&copy; 2017 Sung Yung. Based on <a href="//wordpress.org/themes/mh-magazine-lite/" target="_blank" rel="nofollow noopener noreferrer">MH Magazine lite</a>.</p>
+			</div>
+		</footer>
+	</div>
+
+<script>
+	var navigation = responsiveNav(".menu", {
+		navClass: "menu--collapse",
+	});
+</script>
+
+</body>
+</html>

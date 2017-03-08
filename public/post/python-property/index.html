@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Week 0001 --- property</title>
+<meta name="description" content=" Sung Yung&#39;s Personal blog about everything">
+<meta name="generator" content="Hugo 0.19" />
+<meta property="og:title" content="Python Week 0001 --- property" />
+<meta property="og:description" content="博客搭了有好久了，都是断断续续的写，甚至大半年没有新的内容。已经掌握的或者是新学习的，没有记录一旦长时间不用就会忘掉，毕竟还没有形成本能。所以还是想记录一些东西吧。哈哈，其实还有个原因就是写了没人看哈，然后就没动力了。
+
+这个系列打算一周更新一篇。定位就是内容不一定多，尽量把东西讲清楚吧，按照为什么-是什么-怎么用的进行描述。
+
+那我们就开始吧，这篇主要是关于property。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/python-property/" />
+
+
+
+<meta property="article:published_time" content="2016-06-03T19:10:15&#43;08:00"/>
+<meta property="article:modified_time" content="2016-06-03T19:10:15&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+<script type="text/javascript" src="/js/scripts.js"></script>
+</head>
+<body class="body body-right-sidebar mobile" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+	<div class="container container-outer">
+		<header class="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div class="container container-inner clearfix">
+				<div class="logo" role="banner" itemscope="itemscope" itemtype="http://schema.org/Brand">
+					<a class="logo__link" href="/" title="Sung Yung" rel="home">
+						<h1 class="logo__title">Sung Yung</h1>
+						<h2 class="logo__tagline">人生苦短，我爱Python</h2>
+					</a>
+				</div>
+			</div>
+			<nav class="menu" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<ul class="menu__list">
+	</ul>
+</nav>
+		</header>
+		<div class="wrapper clearfix">
+
+<div class="main-content content" role="main" itemprop="mainContentOfPage">
+	<article class="post">
+		<header class="post__header clearfix">
+			<h1 class="post__title">Python Week 0001 --- property</h1>
+			<p class="post__meta meta">
+				<svg class="icon icon-time" height="14" viewBox="0 0 16 16" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+				<time class="post__meta-date" datetime="2016-06-03 19:10:15 &#43;0800 CST">June 03, 2016</time>
+				<span class="post__meta-categories meta-categories">
+					<svg class="icon icon-category" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+					<a class="meta-categories__link" href="/categories/python-everyweek" rel="category">Python EveryWeek</a></span>
+			</p>
+		</header>
+		<div class="post__content clearfix">
+			<p>博客搭了有好久了，都是断断续续的写，甚至大半年没有新的内容。已经掌握的或者是新学习的，没有记录一旦长时间不用就会忘掉，毕竟还没有形成本能。所以还是想记录一些东西吧。哈哈，其实还有个原因就是写了没人看哈，然后就没动力了。</p>
+
+<p>这个系列打算一周更新一篇。定位就是内容不一定多，尽量把东西讲清楚吧，按照为什么-是什么-怎么用的进行描述。</p>
+
+<p>那我们就开始吧，这篇主要是关于property。</p>
+
+<p></p>
+
+<h3 id="问题引出">问题引出</h3>
+
+<p>我们一般对属性的的操作主要有2个，访问和修改。看个例子。</p>
+
+<pre><code class="language-python">class Person(object):
+    def __init__(self, name):
+        self.name = name
+
+p = Person('Jack')
+print p.name
+p.name = 'Rose'
+print p.name
+
+</code></pre>
+
+<p>我们叫这种使用属性的方式叫点模式（我自己取得。。。），那么问题来了，如果我们想要修改属性的时候加入一个简单的类型检查，应该怎么做？</p>
+
+<p>很容易想到新增一个辅助方法来达成目标。</p>
+
+<pre><code class="language-python">class Person(object):
+    def __init__(self, name):
+        self.name = name
+    
+    def set_name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self.name = value
+        
+p = Person('Jack')
+p.set_name('Rose')
+</code></pre>
+
+<p>我们也看到了，这种方法虽然可以实现功能，但是使用起来不是很方便。所以我们会想有没有一种方法可以做到使用点模式的时候也能够做类型检查。</p>
+
+<h3 id="解决方法">解决方法</h3>
+
+<p>我们可以使用内置的property装饰器来实现。</p>
+
+<pre><code class="language-python">class Person(object):
+
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, basestring):
+            raise TypeError('Expected a string')
+        self._name = value
+
+    @name.deleter
+    def name(self):
+        del self._name
+        
+p = Person('Jack')
+p.name = 'Rose'
+p.name = 222
+del p.name
+</code></pre>
+
+<pre><code class="language-shell">---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+&lt;ipython-input-4-40579c6671bf&gt; in &lt;module&gt;()
+      1 p = Person('Jack')
+      2 p.name = 'Rose'
+----&gt; 3 p.name = 222
+
+&lt;ipython-input-3-335cb8c0ab8b&gt; in name(self, value)
+     14     def name(self, value):
+     15         if not isinstance(value, str):
+---&gt; 16             raise TypeError('Expected a string')
+     17         self._name = value
+     18 
+
+TypeError: Expected a string
+</code></pre>
+
+<p>用起来真是so easy啊。</p>
+
+<blockquote>
+<p>虽然对外访问是name属性，但是内部有个实际存放值的属性_name。</p>
+</blockquote>
+
+<p>另外还有一种用法。</p>
+
+<pre><code class="language-python">class Person(object):
+
+    def __init__(self, name):
+        self._name = name
+
+    def get_name(self):
+        return self._name
+
+    def set_name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self._name = value
+
+    def del_name(self):
+        del self._name
+
+    name = property(get_name, set_name, del_name)
+</code></pre>
+
+<p>我们看看官方的代码注释，一目了然。</p>
+
+<pre><code class="language-python">&quot;&quot;&quot;
+property(fget=None, fset=None, fdel=None, doc=None) -&gt; property attribute
+        
+fget is a function to be used for getting an attribute value, and likewise
+fset is a function for setting, and fdel a function for del'ing, an
+attribute.  Typical use is to define a managed attribute x:
+        
+class C(object):
+    def getx(self): return self._x
+    def setx(self, value): self._x = value
+    def delx(self): del self._x
+    x = property(getx, setx, delx, &quot;I'm the 'x' property.&quot;)
+        
+Decorators make defining new properties or modifying existing ones easy:
+        
+class C(object):
+    @property
+    def x(self):
+        &quot;I am the 'x' property.&quot;
+        return self._x
+    @x.setter
+    def x(self, value):
+        self._x = value
+    @x.deleter
+    def x(self):
+        del self._x
+&quot;&quot;&quot;
+</code></pre>
+
+<p>以后当我们遇到设置属性的时候需要额外逻辑的时候，就可以考虑使用property了。</p>
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="m4.73135 3.3795002q0-.5597-.39604-.9557-.39604-.3961-.95577-.3961-.55974 0-.95578.3961-.39604.396-.39604.9557 0 .5598.39604.9558.39604.3961.95578.3961.55973 0 .95577-.3961.39604-.396.39604-.9558zm11.26865 6.0832q0 .5596998-.39076.9504998l-5.18548 5.196q-.41188.3908-.9610504.3908-.55974 0-.9505-.3908l-7.5511496-7.5616998q-.40132-.3907-.68119-1.0666-.27987-.6759-.27987-1.2357v-4.3934q0-.54920004.40132-.95050004.40132-.4013.9505-.4013h4.39339q.55974 0 1.23565.2799.67591.2798 1.07723.6812l7.55115 7.54060004q.39076.4118.39076.961z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link" href="/tags/python/" rel="tag">Python</a></li>
+	</ul>
+</div>
+
+	</article>
+	
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Sung Yung avatar" src="/img/sy.jpg" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Sung Yung</span>
+	</div>
+	<div class="authorbox__description">
+		一枚Pythoner，热爱编程，喜欢新东西（当然女朋友不用）。
+	</div>
+</div>
+	
+<nav class="post-nav row clearfix" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<div class="post-nav__item post-nav__item--prev col-1-2">
+		<a class="post-nav__link" href="/post/swift-tempurl/" rel="prev"><span class="post-nav__caption">«Previous</span><p class="post-nav__post-title">Openstack Swift tempurl 和 largeobject 支持</p></a>
+	</div>
+</nav>
+
+	
+</div>
+
+<aside class="sidebar" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+	
+<div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="//google.com/search">
+		<label>
+			<span class="screen-reader-text">Search for:</span>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+	
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/python-property/">Python Week 0001 --- property</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/swift-tempurl/">Openstack Swift tempurl 和 largeobject 支持</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-howto-descriptor/">Pythons HOWTO之属性描述符</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-decorate/">Python装饰器的几种类型</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-bibao/">Python闭包的作用域理解</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-twisted01/">Twisted源码分析系列01-reactor</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-with/">浅谈Python的with语句(转载)</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-future/">Python __future__ 模块</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/pass/">PaaS以及开源PaaS平台</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/cloudfoundry/">深入CloudFoundry一周年（转载）</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/python">Python</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/python-everyweek">Python-Everyweek</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e4%ba%91%e8%ae%a1%e7%ae%97">云计算</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%85%b6%e4%bb%96">其他</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget__link widget__link--taglist" href="/tags/python" title="python">python</a>
+	</div>
+</div>
+</aside>
+	</div>
+		<footer class="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div class="container container-inner">
+				<p class="footer__copyright">&copy; 2017 Sung Yung. Based on <a href="//wordpress.org/themes/mh-magazine-lite/" target="_blank" rel="nofollow noopener noreferrer">MH Magazine lite</a>.</p>
+			</div>
+		</footer>
+	</div>
+
+<script>
+	var navigation = responsiveNav(".menu", {
+		navClass: "menu--collapse",
+	});
+</script>
+
+</body>
+</html>

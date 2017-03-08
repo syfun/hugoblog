@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>其他</title>
+<meta name="description" content=" Sung Yung&#39;s Personal blog about everything">
+<meta name="generator" content="Hugo 0.19" />
+<meta property="og:title" content="其他" />
+<meta property="og:description" content=" Sung Yung&#39;s Personal blog about everything" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/categories/%E5%85%B6%E4%BB%96/" />
+
+
+
+<meta property="og:updated_time" content="2015-06-17T22:01:25&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+<link rel="alternate" type="application/rss+xml" title="Sung Yung Feed" href="/categories/%E5%85%B6%E4%BB%96/index.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+<script type="text/javascript" src="/js/scripts.js"></script>
+</head>
+<body class="body body-right-sidebar mobile" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+	<div class="container container-outer">
+		<header class="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div class="container container-inner clearfix">
+				<div class="logo" role="banner" itemscope="itemscope" itemtype="http://schema.org/Brand">
+					<a class="logo__link" href="/" title="Sung Yung" rel="home">
+						<h1 class="logo__title">Sung Yung</h1>
+						<h2 class="logo__tagline">人生苦短，我爱Python</h2>
+					</a>
+				</div>
+			</div>
+			<nav class="menu" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+	<ul class="menu__list">
+	</ul>
+</nav>
+		</header>
+		<div class="wrapper clearfix">
+
+	<div class="main-content loop content" role="main">
+		<header class="page-header">
+			<h1 class="page-header__title">其他</h1>
+		</header>
+		<article class="loop__item post clearfix">
+			<div class="loop__content clearfix">
+				<header class="loop__header">
+					<h3 class="loop__title post__title ">
+						<a href="/post/c-args/" rel="bookmark">C语言可变参数</a>
+					</h3>
+					<div class="loop__meta meta">
+						<svg class="icon icon-time" height="14" viewBox="0 0 16 16" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+						<time class="loop__meta-date" datetime="2015-06-17 22:01:25 &#43;0800 CST">June 17, 2015</time>
+					</div>
+				</header>
+				<div class="loop__excerpt">
+					<p>在python中写一个有可变参数的函数或者方法是很容易的，比如下面这个例子:</p>
+
+<pre><code class="language-python">def print_args(*args, **kwargs):
+	print type(args), args
+	print type(kwargs), kwargs
+	for arg in args:
+		print arg
+	for arg, value in kwargs.items():
+		print '%s = %s' % (arg, value)
+
+&gt;&gt;&gt; print_args(1, 2, 3, x=4, y=5)
+&lt;type 'tuple'&gt; (1, 2, 3)
+&lt;type 'dict'&gt; {'y': 5, 'x': 4}
+1
+2
+3
+y = 5
+x = 4
+
+</code></pre>
+
+<p></p>
+				</div>
+			</div>
+		</article>
+		<article class="loop__item post clearfix">
+			<div class="loop__content clearfix">
+				<header class="loop__header">
+					<h3 class="loop__title post__title ">
+						<a href="/post/pgpool/" rel="bookmark">使用pgpool&#43;流复制搭建Postgresql高可用环境</a>
+					</h3>
+					<div class="loop__meta meta">
+						<svg class="icon icon-time" height="14" viewBox="0 0 16 16" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+						<time class="loop__meta-date" datetime="2015-05-10 19:18:40 &#43;0800 CST">May 10, 2015</time>
+					</div>
+				</header>
+				<div class="loop__excerpt">
+					<p>研究了2周的pgpool搭建终于有点了成果，在这里总结下整个过程。</p>
+
+<h2 id="一-环境">一.环境</h2>
+
+<p>db1 10.0.0.2  ubuntu 14.04 server</p>
+
+<p>db2 10.0.0.3  ubuntu 14.04 server</p>
+
+<p>watchdog VIP： 10.0.0.4</p>
+
+<p>pg版本：    9.4.0</p>
+
+<p>pgpool版本：3.4.1</p>
+
+<p></p>
+				</div>
+			</div>
+		</article>
+		<article class="loop__item post clearfix">
+			<div class="loop__content clearfix">
+				<header class="loop__header">
+					<h3 class="loop__title post__title ">
+						<a href="/post/pg-subprocess/" rel="bookmark">Postgresql子进程启动</a>
+					</h3>
+					<div class="loop__meta meta">
+						<svg class="icon icon-time" height="14" viewBox="0 0 16 16" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+						<time class="loop__meta-date" datetime="2015-04-05 19:19:35 &#43;0800 CST">April 05, 2015</time>
+					</div>
+				</header>
+				<div class="loop__excerpt">
+					<p>PG是多进程的运行模式，除了Postmaster主进程外，还有以下子进程：</p>
+
+<ol>
+<li>SysLogger process</li>
+<li>Startup process</li>
+<li>Bgwriter process</li>
+<li>Checkpointer process</li>
+<li>Walwriter process</li>
+<li>Walreceiver process</li>
+<li>Pgstat process</li>
+<li>Pgarchive process</li>
+<li>Auto Vacuum process</li>
+</ol>
+
+<p>那么子进程到底是在何时启动的？</p>
+
+<p></p>
+				</div>
+			</div>
+		</article>
+		<article class="loop__item post clearfix">
+			<div class="loop__content clearfix">
+				<header class="loop__header">
+					<h3 class="loop__title post__title ">
+						<a href="/post/vs-build-pg/" rel="bookmark">使用VS2013编译安装postgresql</a>
+					</h3>
+					<div class="loop__meta meta">
+						<svg class="icon icon-time" height="14" viewBox="0 0 16 16" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+						<time class="loop__meta-date" datetime="2015-03-10 19:24:26 &#43;0800 CST">March 10, 2015</time>
+					</div>
+				</header>
+				<div class="loop__excerpt">
+					<p>整理一下在windows平台下使用vs2013编译安装postgresql的步骤，postgresql版本是9.4.0。</p>
+
+<p>我的pg源码目录是E:\Workspace\postgresql-9.4.0。</p>
+
+<p></p>
+				</div>
+			</div>
+		</article>
+
+		
+	</div>
+
+<aside class="sidebar" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+	
+<div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="//google.com/search">
+		<label>
+			<span class="screen-reader-text">Search for:</span>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+	
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/python-property/">Python Week 0001 --- property</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/swift-tempurl/">Openstack Swift tempurl 和 largeobject 支持</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-howto-descriptor/">Pythons HOWTO之属性描述符</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-decorate/">Python装饰器的几种类型</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-bibao/">Python闭包的作用域理解</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-twisted01/">Twisted源码分析系列01-reactor</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-with/">浅谈Python的with语句(转载)</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/python-future/">Python __future__ 模块</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/pass/">PaaS以及开源PaaS平台</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/cloudfoundry/">深入CloudFoundry一周年（转载）</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/python">Python</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/python-everyweek">Python-Everyweek</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e4%ba%91%e8%ae%a1%e7%ae%97">云计算</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%85%b6%e4%bb%96">其他</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget__link widget__link--taglist" href="/tags/python" title="python">python</a>
+	</div>
+</div>
+</aside>
+	</div>
+		<footer class="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div class="container container-inner">
+				<p class="footer__copyright">&copy; 2017 Sung Yung. Based on <a href="//wordpress.org/themes/mh-magazine-lite/" target="_blank" rel="nofollow noopener noreferrer">MH Magazine lite</a>.</p>
+			</div>
+		</footer>
+	</div>
+
+<script>
+	var navigation = responsiveNav(".menu", {
+		navClass: "menu--collapse",
+	});
+</script>
+
+</body>
+</html>
