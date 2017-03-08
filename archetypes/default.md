@@ -1,5 +1,0 @@
-+++
-tags = []
-categories = []
-draft = true
-+++

@@ -1,22 +1,29 @@
-baseurl = "https://www.example.com/"
-title = "Sung Yung's BLOG"
-author = "sungyung"
-canonifyurls = true
-languagecode = "en"
-theme = "black-and-light"
+baseurl = "/"
+title = "Sung Yung"
+languageCode = "en-us"
+paginate = "10" # Number of posts per page
+theme = "mainroad"
+disqusShortname = "" # Enable comments by entering your Disqus shortname
+googleAnalytics = "" # Enable Google Analytics by entering your tracking id
 
-pygmentsstyle       = "bw"
-pygmentscodefences  = true
+[Author]
+    name = "Sung Yung"
+    bio = "一枚Pythoner，热爱编程，喜欢新东西（当然女朋友不用）。"
+    avatar = "img/sy.jpg"
 
-[params]
-  sitename = "Sung Yung"
 
-[[menu.main]]
-    name = "About"
-    url  = "https://github.com/davidhampgonsalves/hugo-black-and-light-theme"
-[[menu.main]]
-    name = "Projects"
-    url  = "https://github.com/davidhampgonsalves/hugo-black-and-light-theme"
-[[menu.main]]
-    name = "Resume"
-    url  = "https://github.com/davidhampgonsalves/hugo-black-and-light-theme"
+[Params]
+    subtitle = "人生苦短，我爱Python" # Subtitle of your site
+    description = " Sung Yung's Personal blog about everything" # Description of your site
+    opengraph = true
+    leftsidebar = false # Move sidebar to the left side if true
+    authorbox = true
+    post_navigation = true
+
+
+[Params.widgets]
+    search = true # Enable "Search" widget
+    recent_articles = true # Enable "Recent arcticles" widget
+    categories = true # Enable "Categories" widget
+    tags = true # Enable "Tags" widget
+        tags_counter = false # Enable counter for each tag in "Tags" widget (disabled by default)
