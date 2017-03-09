@@ -28,3 +28,4 @@ echo "blog.syfun.net" > CNAME
 git add --all && git commit -m "Publishing to gh-pages (deploy.sh)"
 cd ..
 git push origin gh-pages
+rm -rf public
