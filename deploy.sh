@@ -24,7 +24,7 @@ hugo
 
 echo "Updating gh-pages branch"
 cd public
-echo "blog.syfun.net" > CNAME
+echo "blog.ysun.top" > CNAME
 git add --all && git commit -m "Publishing to gh-pages (deploy.sh)"
 cd ..
 git push origin gh-pages

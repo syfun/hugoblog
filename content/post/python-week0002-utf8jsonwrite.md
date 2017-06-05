@@ -28,7 +28,32 @@ with open('out.json', 'r') as f:
 {"\u4f60\u597d": "Python3"}
 ```
 
+最后打印的值并不是中文。
+
 <!--more-->
+
+### Method
+
+我猜测有两处可能有两处原因。
+
+1. json dumps返回的值不包含中文
+2. 写入文件的时候转换成了ascii形式
+
+针对第一点，我们来测试一下。
+
+```python
+import json
+
+d = {'你好': 'Python3'}
+b = json.dumps(d)
+print(b)
+```
+
+```shell
+{"\u4f60\u597d": "Python3"}
+```
+
+咦，这个时候值已经变成了ascii
 
 
 
