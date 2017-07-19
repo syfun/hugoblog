@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Python __future__ 模块</title>
+  <meta property="og:title" content="Python __future__ 模块" />
+  <meta name="twitter:title" content="Python __future__ 模块" />
+  <meta name="description" content="在Python2.7代码中经常能看到使用__future__模块。那么__future__到底是做什么的呢？
+
+简介
+
+从单词含义上猜应该是“未来”的模块。它有下面几个目的：
+
+
+避免和现有分析import工具混淆，并得到你期望的模块
+确保2.1之前的版本导入__future__产生运行时异常，因为2.1之前没有这个模块
+文档化不兼容的改变，通常这些改变会在新版中强制执行。这类文档以可执行的形式组织，通过导入__future__进行可编程式的检查。
+
+
+以上是对官方解释的粗略翻译，翻译起来感觉有些拗口。我是这么理解的，某个版本中出现了某个新的功能特性，而且这个特性和当前版本中使用的不兼容，也就是它在该版本中不是语言标准，那么我如果想要使用的话就需要从__future__模块导入。在2.1版本之前并没有__future__，所以使用它会引发异常。当然，在以后的某个版本中，比如说3中，某个特性已经成为标准的一部分，那么使用该特性就不用从__future__导入了。
+
+下面说一下__future__是如何实现新特性的。
+
+">
+  <meta property="og:description" content="在Python2.7代码中经常能看到使用__future__模块。那么__future__到底是做什么的呢？
+
+简介
+
+从单词含义上猜应该是“未来”的模块。它有下面几个目的：
+
+
+避免和现有分析import工具混淆，并得到你期望的模块
+确保2.1之前的版本导入__future__产生运行时异常，因为2.1之前没有这个模块
+文档化不兼容的改变，通常这些改变会在新版中强制执行。这类文档以可执行的形式组织，通过导入__future__进行可编程式的检查。
+
+
+以上是对官方解释的粗略翻译，翻译起来感觉有些拗口。我是这么理解的，某个版本中出现了某个新的功能特性，而且这个特性和当前版本中使用的不兼容，也就是它在该版本中不是语言标准，那么我如果想要使用的话就需要从__future__模块导入。在2.1版本之前并没有__future__，所以使用它会引发异常。当然，在以后的某个版本中，比如说3中，某个特性已经成为标准的一部分，那么使用该特性就不用从__future__导入了。
+
+下面说一下__future__是如何实现新特性的。
+
+">
+  <meta name="twitter:description" content="在Python2.7代码中经常能看到使用__future__模块。那么__future__到底是做什么的呢？
+
+简介
+
+从单词含义上猜应该是“未来”的模块。它有下面几个目的：
+
+
+避免和现有分析import工具混淆，并得到你期望的模块
+确保2.1之前的版本导入__future__产生运行时异常，因为2.1之前没有这个模块
+文档化不兼容的改变，通常这些改变会在新版中强制执行。这类文档以可执行的形式组 …">
+  <meta name="author" content=""/>
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="/post/python-future/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Yung Sung" />
+
+  <meta name="generator" content="Hugo 0.21" />
+  <link rel="canonical" href="/post/python-future/" />
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Yung Sung">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="/css/pygment_highlights.css" />
+  <link rel="stylesheet" href="/css/highlight.min.css" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Yung Sung</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>Python __future__ 模块</h1>
+                
+                
+                  <span class="post-meta">
+  Posted on July 3, 2015
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>在Python2.7代码中经常能看到使用__future__模块。那么__future__到底是做什么的呢？</p>
+
+<h2 id="简介">简介</h2>
+
+<p>从单词含义上猜应该是“未来”的模块。它有下面几个<a href="https://docs.python.org/2.7/library/__future__.html">目的</a>：</p>
+
+<ol>
+<li>避免和现有分析import工具混淆，并得到你期望的模块</li>
+<li>确保2.1之前的版本导入__future__产生运行时异常，因为2.1之前没有这个模块</li>
+<li>文档化不兼容的改变，通常这些改变会在新版中强制执行。这类文档以可执行的形式组织，通过导入__future__进行可编程式的检查。</li>
+</ol>
+
+<p>以上是对官方解释的粗略翻译，翻译起来感觉有些拗口。我是这么理解的，某个版本中出现了某个新的功能特性，而且这个特性和当前版本中使用的不兼容，也就是它在该版本中不是语言标准，那么我如果想要使用的话就需要从__future__模块导入。在2.1版本之前并没有__future__，所以使用它会引发异常。当然，在以后的某个版本中，比如说3中，某个特性已经成为标准的一部分，那么使用该特性就不用从__future__导入了。</p>
+
+<p>下面说一下__future__是如何实现新特性的。</p>
+
+<p></p>
+
+<h2 id="feature类">_Feature类</h2>
+
+<p>__future__.py中有形如下面的语句：</p>
+
+<pre><code class="language-python">FeatureName = _Feature(OptionalRelease, MandatoryRelease, CompilerFlag)
+
+class _Feature:
+    def __init__(self, optionalRelease, mandatoryRelease, compiler_flag):
+        self.optional = optionalRelease    # 某个特性被认可的初始版本
+        self.mandatory = mandatoryRelease  # 某个特性成为标准的版本
+        self.compiler_flag = compiler_flag
+
+    def getOptionalRelease(self):
+        &quot;&quot;&quot;Return first release in which this feature was recognized.
+
+        This is a 5-tuple, of the same form as sys.version_info.
+        &quot;&quot;&quot;
+
+        return self.optional
+
+    def getMandatoryRelease(self):
+        &quot;&quot;&quot;Return release in which this feature will become mandatory.
+
+        This is a 5-tuple, of the same form as sys.version_info, or, if
+        the feature was dropped, is None.
+        &quot;&quot;&quot;
+
+        return self.mandatory
+
+    def __repr__(self):
+        return &quot;_Feature&quot; + repr((self.optional,
+                                  self.mandatory,
+                                  self.compiler_flag))
+</code></pre>
+
+<h2 id="optionalrelease参数">OptionalRelease参数</h2>
+
+<p>通常OptionalRelease版本小于MandatoryRelease，每个都是5个元素的元组，类似sys.version_info。</p>
+
+<pre><code class="language-python">(PY_MAJOR_VERSION, # the 2 in 2.1.0a3; an int
+PY_MINOR_VERSION, # the 1; an int
+PY_MICRO_VERSION, # the 0; an int
+PY_RELEASE_LEVEL, # &quot;alpha&quot;, &quot;beta&quot;, &quot;candidate&quot; or &quot;final&quot;; string
+PY_RELEASE_SERIAL # the 3; an int
+)
+
+# 例如: (2, 1, 0, &quot;alpha&quot;, 3)表示2.1.0a3版
+</code></pre>
+
+<p>OptionalRelease版本中开始通过下列方式使用某个特性：</p>
+
+<pre><code class="language-python">from __future__ import FeatureName
+</code></pre>
+
+<h2 id="mandatoryrelease参数">MandatoryRelease参数</h2>
+
+<p>在MandatoryRelease版本中该特性变成Python标准的一部分。此外MandatoryRelease版本后不需要上面的导入语句就能使用该特性。MandatoryRelease可能是None，表示一个计划中的特性被放弃了。</p>
+
+<h2 id="compilerflag参数">CompilerFlag参数</h2>
+
+<p>CompilerFlag编译器标志，它是一个位域标志，传给内建函数compile()做第四个参数，用来在动态编译代码的时候允许新的特性。</p>
+
+<p>CompilerFlag值等价于Include/compile.h的预定义的CO_xxx标志。</p>
+
+<h2 id="python2-future-模块的features">Python2 __future__模块的features</h2>
+
+<p>一共是以下7种，其对应的CompilerFlag:</p>
+
+<pre><code class="language-python">all_feature_names = [
+    &quot;nested_scopes&quot;,
+    &quot;generators&quot;,
+    &quot;division&quot;,
+    &quot;absolute_import&quot;,
+    &quot;with_statement&quot;,
+    &quot;print_function&quot;,
+    &quot;unicode_literals&quot;,
+]
+
+CO_NESTED            = 0x0010   # nested_scopes
+CO_GENERATOR_ALLOWED = 0        # generators (obsolete, was 0x1000)
+CO_FUTURE_DIVISION   = 0x2000   # division
+CO_FUTURE_ABSOLUTE_IMPORT = 0x4000 # perform absolute imports by default
+CO_FUTURE_WITH_STATEMENT  = 0x8000   # with statement
+CO_FUTURE_PRINT_FUNCTION  = 0x10000   # print function
+CO_FUTURE_UNICODE_LITERALS = 0x20000 # unicode string literals
+</code></pre>
+
+<h3 id="nested-scopes">nested_scopes</h3>
+
+<pre><code class="language-python">nested_scopes = _Feature((2, 1, 0, &quot;beta&quot;,  1),
+                         (2, 2, 0, &quot;alpha&quot;, 0),
+                         CO_NESTED)
+</code></pre>
+
+<p>nested_scopes指的是嵌套作用域，2.1.0b1中出现，2.2.0a0中成为标准。</p>
+
+<p>提到作用域，那么就不得不说命名空间。</p>
+
+<h4 id="命名空间的定义">命名空间的定义</h4>
+
+<p>Python命名空间是名称到对象的映射，目前是用字典实现，键名是变量名，值是变量的值。比如：</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; x = 3
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__name__': '__main__', '__doc__': None, 'x': 3, '__package__': None}
+</code></pre>
+
+<p>可以看到变量x，3以字典的形式存放在globals空间内。以之对应的名称空间还有：locals()。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; locals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__name__': '__main__', '__doc__': None, 'x': 3, '__package__'
+</code></pre>
+
+<p>实际上，你可以通过向名字添加键名和值，然后就可以直接使用名称了：</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; globals()['y'] = 5
+&gt;&gt;&gt; y
+5
+</code></pre>
+
+<p>通常，我们用属性来称呼&rsquo;.&lsquo;点号之后的名称为属性。比如，在z.real中，real是z的一个属性。严格来说，模块中的名称引用就是属性引用。modname.funcname中，modname是一个模块对象，而funcname是它的一个属性。模块属性和全局名称有映射关系，它们共享全局命名空间。上面代码中的x和y都是模块<strong>main</strong>的属性。</p>
+
+<p>属性可能是只读的，也可能是可写的。模块属性是可写的，你可以这么做，modname.the_answer = 42。可写的属性能够用del语句来删除。比如，del modname.the_answer将会从模块modname中删除the_answer属性。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; x = 3
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, 'func': &lt;function func at 0x029FA270&gt;, 'x': 3, '__name__': '__main__', '__doc__': None}
+&gt;&gt;&gt; del x
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, 'func': &lt;function func at 0x029FA270&gt;, '__name__': '__main__', '__doc__': None}
+</code></pre>
+
+<p>del做的事实际上是删除了全局名称字典中的x键值。</p>
+
+<h4 id="命名空间的种类">命名空间的种类</h4>
+
+<p>Python中有三种命名空间：</p>
+
+<p>a) 局部，函数内的命名空间就是局部的，它记录了函数的变量，包括函数的参数和局部定义的变量。</p>
+
+<p>b) 全局，模块内的命名空间就是全局的，它记录了模块的变量，包括函数、类、其它导入的模块、模块级的变量和常量。</p>
+
+<p>c) 内置，包括异常类型、内建函数和特殊方法，可以代码中任意地方调用；</p>
+
+<p>上面提到的globals是全局命名空间，locals是局部命名空间。</p>
+
+<p>命名空间会在不同的时间创建，并有不同的生命周期。包含内置名称的命名空间是在python解释器启动的时候创建的，并且不会被删除。一个模块的全局命名空间是在模块定义代码被读入的时候创建的，一般情况下，模块命名空间会持续到解释器结束。在解释器最上层调用的代码，不管是从脚本中读入的还是在交互式界面中，都会被认为是属于一个叫做<strong>main</strong>模块的,所以它们有自己的全局命名空间。（内置名称实际上也放置在一个模块中，称为builtins）。</p>
+
+<p>一个函数的局部命名空间在函数被调用的时候创建，在函数返回或者引发一个不在函数内部处理的异常时被删除。（实际上用遗忘来描述这个删除比较好。）当然了，递归调用的函数每个都有它们自己的命名空间。</p>
+
+<h4 id="命名空间的可见性-作用域">命名空间的可见性（作用域）</h4>
+
+<p>作用域是一个Python程序中命名空间直接可见的代码区域，也就是说这个区域内可以直接使用命名空间内的名称。</p>
+
+<p>a) 内置命名空间在代码所有位置都是可见的，所以可以随时被调用；</p>
+
+<p>b) 全局命名空间和局部命名空间中， 如果有同名变量，在全局命名空间处，局部命名空间内的同名变量是不可见的；</p>
+
+<p>c) 在局部命名空间处，全局命名空间的同名变量是不可见的（只有变量不同名的情况下，可使用 global关键字让其可见）。</p>
+
+<h4 id="命名空间的查找顺序">命名空间的查找顺序</h4>
+
+<p>a) 如果在函数内调用一个变量，先在函数内（局部命名空间）查找，如果找到则停止查找。否则在函数外部（全局命名空间）查找，如果还是没找到，则查找内置命名空间。如果以上三个命名都未找到，则抛出NameError 的异常错误。</p>
+
+<p>b) 如果在函数外调用一个变量，则在函数外查找（全局命名空间，局部命名空间此时不可见），如果找到则停止查找，否则到内置命名空间中查找。如果两者都找不到，则抛出异常。只有当局部命名空间内，使用global 关键字声明了一个变量时，查找顺序则是 a) 的查找顺序。</p>
+
+<h4 id="nested-scopes说明">nested_scopes说明</h4>
+
+<p>Python2.2引入了一种略有不同但重要的改变，它会影响命名空间的搜索顺序：嵌套的作用域。在2.0中，当你在一个嵌套函数或 lambda 函数中引用一个变量时，Python会在当前（嵌套的或 lambda）函数的名称空间中搜索，然后在模块的名称空间。2.2将支在当前（嵌套的或 lambda）函数的名称空间中搜索，然后是在父函数的名称空间，接着是模块的名称空间。2.1可以两种方式工作，缺省地，按n2.0的方式工作，如果想像2.2中那样工作，使用下面的导入语句：</p>
+
+<pre><code class="language-python">from __future__ import nested_scopes
+</code></pre>
+
+<p>当然现在一般都用2.7或者3了，所以已经是嵌套作用域了。</p>
+
+<p>来看下面一段代码：</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; x = 3
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, 'func': &lt;function func at 0x028BA2B0&gt;, 'x': 3, '__name__': '__main__', '__doc__': None}
+&gt;&gt;&gt; def func():
+        x = 2
+	      print locals()
+
+&gt;&gt;&gt; func()
+{'x': 2}
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, 'func': &lt;function func at 0x028BA2B0&gt;, 'x': 3, '__name__': '__main__', '__doc__': None}
+</code></pre>
+
+<p>全局命名空间中x的值前后并没有改变，反而在func函数的局部命名空间中产生了一个新的名称x。由此可以看出，外层作用域的命名空间对于内层来说是只读的，当写一个同名的名称时，只会在内层生成一个新的名称。但是如果一个名称被声明为global，对其引用和复制都会直接作用域全局名称。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; x = 2
+&gt;&gt;&gt; def func():
+        global x
+	      x = 3
+	      print locals()
+
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, 'func': &lt;function func at 0x029FA270&gt;, 'x': 2, '__name__': '__main__', '__doc__': None
+&gt;&gt;&gt; func()
+{}
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, 'func': &lt;function func at 0x029FA270&gt;, 'x': 3, '__name__': '__main__', '__doc__': None}
+</code></pre>
+
+<p>x的值前后改变了，而且func函数中也没用增加x。</p>
+
+<h4 id="import-module和from-module-import-func">import module和from module import func</h4>
+
+<p>import module将模块自身导入到当前命名空间，所以如果要使用module的某个函数或属性，只能module.func这么用。</p>
+
+<p>而使用from module import func，则是将函数func导入当前的名称空间，这时候使用这个函数就不需要模块名称而是直接使用func。</p>
+
+<p>我们通过一段代码来描述：</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, '__name__': '__main__', '__doc__': None}
+&gt;&gt;&gt; import os
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, '__name__': '__main__', 'os': &lt;module 'os' from 'C:\Python27\lib\os.pyc'&gt;, '__doc__': None}
+&gt;&gt;&gt; del os
+&gt;&gt;&gt; from os import sys
+&gt;&gt;&gt; globals()
+{'__builtins__': &lt;module '__builtin__' (built-in)&gt;, '__package__': None, 'sys': &lt;module 'sys' (built-in)&gt;, '__name__': '__main__', '__doc__': None}
+</code></pre>
+
+<p>是不是很清晰，担任sys也是一个模块，如果要使用sys模块的属性，也必须要使用sys模块名了。这也是嵌套作用域的一个例子。</p>
+
+<p>额。。。貌似本文的正题是__future__，哈哈，扯远了，我们继续来看下面一个feauture。</p>
+
+<h3 id="generators">generators</h3>
+
+<pre><code class="language-python">generators = _Feature((2, 2, 0, &quot;alpha&quot;, 1),
+                      (2, 3, 0, &quot;final&quot;, 0),
+                      CO_GENERATOR_ALLOWED)
+</code></pre>
+
+<p>generators生成器起于2.2.0a1版，在2.3.0f0中成为标准。</p>
+
+<h4 id="简介-1">简介</h4>
+
+<p>生成器是这样一个函数，它记住上一次返回时在函数体中的位置。对生成器函数的第二次（或第 n 次）调用跳转至该函数中间，而上次调用的所有局部变量都保持不变。Python中yeild就是一个生成器。</p>
+
+<h4 id="yield-生成器的运行机制">yield 生成器的运行机制</h4>
+
+<p>当你问生成器要一个数时，生成器会执行，直至出现 yield 语句，生成器把 yield 的参数给你，之后生成器就不会往下继续运行。 当你问他要下一个数时，他会从上次的状态。开始运行，直至出现yield语句，把参数给你，之后停下。如此反复直至退出函数。</p>
+
+<h4 id="示例">示例</h4>
+
+<pre><code class="language-python">&gt;&gt;&gt; def my_generator():
+	      yield 1
+	      yield 2
+	      yield 3
+
+&gt;&gt;&gt; gen = my_generator()
+&gt;&gt;&gt; gen.next()
+1
+&gt;&gt;&gt; gen.next()
+2
+&gt;&gt;&gt; gen.next()
+3
+&gt;&gt;&gt; gen.next()
+
+Traceback (most recent call last):
+  File &quot;&lt;pyshell#92&gt;&quot;, line 1, in &lt;module&gt;
+    gen.next()
+StopIteration
+&gt;&gt;&gt; for n in my_generator:
+        print n
+1
+2
+3
+</code></pre>
+
+<p>yield在被next调用之前并没有执行（for循环内部也是使用next），在执行完最后一个yield之后再继续调用next，那么就好遇到StopIteration异常了。这里涉及到迭代器了，不再进行详细的描述了，后面会单开一章来讲Python的三大器：迭代器、生成器、装饰器。</p>
+
+<h3 id="division">division</h3>
+
+<pre><code class="language-python">division = _Feature((2, 2, 0, &quot;alpha&quot;, 2),
+                    (3, 0, 0, &quot;alpha&quot;, 0),
+                    CO_FUTURE_DIVISION)
+</code></pre>
+
+<p>这个很简单，举例说明一下大家就懂了。</p>
+
+<pre><code class="language-python"># python2.7中，不导入__future__
+&gt;&gt;&gt; 10/3
+3
+
+# 导入__future__
+&gt;&gt;&gt; from __future__ import division
+&gt;&gt;&gt; 10/3
+3.3333333333333335
+</code></pre>
+
+<p>很容易看出来，2.7中默认的整数除法是结果向下取整，而导入了__future__之后除法就是真正的除法了。这也是python2和python3的一个重要区别。</p>
+
+<h3 id="absolute-import">absolute_import</h3>
+
+<pre><code class="language-python">absolute_import = _Feature((2, 5, 0, &quot;alpha&quot;, 1),
+                           (3, 0, 0, &quot;alpha&quot;, 0),
+                           CO_FUTURE_ABSOLUTE_IMPORT)
+</code></pre>
+
+<p>python2.7中，在默认情况下，导入模块是相对导入的（relative import），比如说</p>
+
+<pre><code class="language-python">from . import json
+from .json import json_dump
+</code></pre>
+
+<p>这些以&rsquo;.&lsquo;点导入的是相对导入，而绝对导入（absolute import）则是指从系统路径sys.path最底层的模块导入。比如:</p>
+
+<pre><code class="language-python">import os
+from os import sys
+</code></pre>
+
+<h3 id="with-statement">with_statement</h3>
+
+<pre><code class="language-python">with_statement = _Feature((2, 5, 0, &quot;alpha&quot;, 1),
+                          (2, 6, 0, &quot;alpha&quot;, 0),
+                          CO_FUTURE_WITH_STATEMENT)
+</code></pre>
+
+<p>with语句也不详细讲了，看这篇<a href="http://blog.syfun.net/2015/07/07/python-with-statement">浅谈Python的with语句</a></p>
+
+<h3 id="print-function">print_function</h3>
+
+<pre><code class="language-python">print_function = _Feature((2, 6, 0, &quot;alpha&quot;, 2),
+                          (3, 0, 0, &quot;alpha&quot;, 0),
+                          CO_FUTURE_PRINT_FUNCTION)
+</code></pre>
+
+<p>这个就是最经典的python2和python3的区别了，python2中print不需要括号，而在python3中则需要。</p>
+
+<pre><code class="language-python"># python2.7
+print &quot;Hello world&quot;
+
+# python3
+print(&quot;Hello world&quot;)
+</code></pre>
+
+<h3 id="unicode-literals">unicode_literals</h3>
+
+<pre><code class="language-python">unicode_literals = _Feature((2, 6, 0, &quot;alpha&quot;, 2),
+                            (3, 0, 0, &quot;alpha&quot;, 0),
+                            CO_FUTURE_UNICODE_LITERALS)
+</code></pre>
+
+<p>这是unicode的问题，讲起来又是长篇大论了，容我偷个懒，后面再讲吧。</p>
+
+<p>至此，__future__模块的几个特性，算是说完了。好多内容都是参照官方文档，所以大家还是多看文档吧。</p>
+      </article>
+
+      <ul class="pager blog-pager">
+        
+          <li class="previous">
+            <a href="/post/pass/" data-toggle="tooltip" data-placement="top" title="PaaS以及开源PaaS平台">&larr; Previous Post</a>
+          </li>
+        
+        
+          <li class="next">
+            <a href="/post/python-with/" data-toggle="tooltip" data-placement="top" title="浅谈Python的with语句(转载)">Next Post &rarr;</a>
+          </li>
+        
+      </ul>
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:sunyu418@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/syfun" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+          &nbsp;&bull;&nbsp;
+          2017
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="/">Yung Sung</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.21</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/main.js"></script>
+<script src="/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.js" integrity="sha256-UplRCs9v4KXVJvVY+p+RSo5Q4ilAUXh7kpjyIP5odyc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe-ui-default.min.js" integrity="sha256-PWHOlUzc96pMc8ThwRIXPn8yH4NOLu42RQ0b9SpnpFk=" crossorigin="anonymous"></script>
+<script src="/js/load-photoswipe.js"></script>
+
+
+
+  </body>
+</html>
+

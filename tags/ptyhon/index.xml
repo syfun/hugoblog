@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ptyhon on Yung Sung</title>
+    <link>/tags/ptyhon/</link>
+    <description>Recent content in Ptyhon on Yung Sung</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>sunyu418@gmail.com</managingEditor>
+    <webMaster>sunyu418@gmail.com</webMaster>
+    <lastBuildDate>Thu, 02 Apr 2015 19:21:04 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/ptyhon/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Python argparse</title>
+      <link>/post/python-argparse/</link>
+      <pubDate>Thu, 02 Apr 2015 19:21:04 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-argparse/</guid>
+      <description>&lt;p&gt;最近在看openstack cinderclient代码，就顺带着看了下argparse。argparse是Python官方推荐的命令行解析工具库。&lt;/p&gt;
+
+&lt;p&gt;学习Python库首先要去看&lt;a href=&#34;https://docs.python.org/2.7/library/argparse.html&#34;&gt;官方文档&lt;/a&gt;，这里有个简单的&lt;a href=&#34;https://docs.python.org/2.7/howto/argparse.html#id1&#34;&gt;Tutorial&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

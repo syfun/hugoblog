@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Yung Sung</title>
+    <link>/tags/python/</link>
+    <description>Recent content in Python on Yung Sung</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>sunyu418@gmail.com</managingEditor>
+    <webMaster>sunyu418@gmail.com</webMaster>
+    <lastBuildDate>Fri, 03 Mar 2017 19:10:15 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Python Week 0001 --- property</title>
+      <link>/post/python-property/</link>
+      <pubDate>Fri, 03 Mar 2017 19:10:15 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-property/</guid>
+      <description>&lt;p&gt;博客搭了有好久了，都是断断续续的写，甚至大半年没有新的内容。已经掌握的或者是新学习的，没有记录一旦长时间不用就会忘掉，毕竟还没有形成本能。所以还是想记录一些东西吧。哈哈，其实还有个原因就是写了没人看哈，然后就没动力了。&lt;/p&gt;
+
+&lt;p&gt;这个系列打算一周更新一篇。定位就是内容不一定多，尽量把东西讲清楚吧。&lt;/p&gt;
+
+&lt;p&gt;那我们就开始吧，这篇主要是关于property。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Pythons HOWTO之属性描述符</title>
+      <link>/post/python-howto-descriptor/</link>
+      <pubDate>Sat, 08 Aug 2015 22:27:41 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-howto-descriptor/</guid>
+      <description>&lt;p&gt;今天开个新坑，Pythons HOWTOS系列，主要是对官方文档的翻译。由于英语水平有限，基本上都是意译。这里附上&lt;a href=&#34;https://docs.python.org/2.7/howto/index.html&#34;&gt;链接&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;本篇是第一篇，主要说的是&lt;a href=&#34;https://docs.python.org/2.7/howto/descriptor.html#id2&#34;&gt;属性描述符&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python装饰器的几种类型</title>
+      <link>/post/python-decorate/</link>
+      <pubDate>Mon, 27 Jul 2015 22:25:34 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-decorate/</guid>
+      <description>&lt;p&gt;装饰器的原理就是闭包，这在&lt;a href=&#34;/post/python-bibao/&#34;&gt;前面&lt;/a&gt;已经提到过了。本篇主要记录一下装饰器的几种类型。&lt;/p&gt;
+
+&lt;h2 id=&#34;无参数装饰器&#34;&gt;无参数装饰器&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def deco(func):
+    def _deco(*args, **kwargs):
+        print &#39;call deco&#39;
+        func(*args, **kwargs)
+    return _deco
+
+@deco
+def test():
+    print &#39;call test&#39;
+
+# 等同于
+def test():
+    print &#39;call test&#39;
+test = deco(func)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python闭包的作用域理解</title>
+      <link>/post/python-bibao/</link>
+      <pubDate>Wed, 22 Jul 2015 22:23:31 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-bibao/</guid>
+      <description>&lt;h2 id=&#34;什么是闭包&#34;&gt;什么是闭包&lt;/h2&gt;
+
+&lt;p&gt;在维基中，闭包的解释是这样的：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;在计算机科学中，闭包（Closure）是词法闭包（Lexical Closure）的简称，是引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Twisted源码分析系列01-reactor</title>
+      <link>/post/python-twisted01/</link>
+      <pubDate>Tue, 14 Jul 2015 22:22:03 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-twisted01/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;Twisted是用Python实现的事件驱动的网络框架。&lt;/p&gt;
+
+&lt;p&gt;如果想看教程的话，我觉得写得最好的就是&lt;a href=&#34;http://krondo.com/?page_id=1327&#34;&gt;Twisted Introduction&lt;/a&gt;了，这是&lt;a href=&#34;https://github.com/syfun/twisted-intro-cn&#34;&gt;翻译&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>浅谈Python的with语句(转载)</title>
+      <link>/post/python-with/</link>
+      <pubDate>Tue, 07 Jul 2015 22:20:10 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-with/</guid>
+      <description>&lt;p&gt;本文转自&lt;a href=&#34;http://www.ibm.com/developerworks/cn/opensource/os-cn-pythonwith/&#34;&gt;浅谈Python的with语句&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
+
+&lt;p&gt;with 语句是从 Python 2.5 开始引入的一种与异常处理相关的功能（2.5 版本中要通过 from __future__ import with_statement 导入后才可以使用），从 2.6 版本开始缺省可用（参考 &lt;a href=&#34;https://docs.python.org/release/2.6/whatsnew/2.6.html#pep-343-the-with-statement&#34;&gt;What&amp;rsquo;s new in Python 2.6?&lt;/a&gt; 中 with 语句相关部分介绍）。with 语句适用于对资源进行访问的场合，确保不管使用过程中是否发生异常都会执行必要的“清理”操作，释放资源，比如文件使用后自动关闭、线程中锁的自动获取和释放等。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python __future__ 模块</title>
+      <link>/post/python-future/</link>
+      <pubDate>Fri, 03 Jul 2015 22:18:29 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-future/</guid>
+      <description>&lt;p&gt;在Python2.7代码中经常能看到使用__future__模块。那么__future__到底是做什么的呢？&lt;/p&gt;
+
+&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;从单词含义上猜应该是“未来”的模块。它有下面几个&lt;a href=&#34;https://docs.python.org/2.7/library/__future__.html&#34;&gt;目的&lt;/a&gt;：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;避免和现有分析import工具混淆，并得到你期望的模块&lt;/li&gt;
+&lt;li&gt;确保2.1之前的版本导入__future__产生运行时异常，因为2.1之前没有这个模块&lt;/li&gt;
+&lt;li&gt;文档化不兼容的改变，通常这些改变会在新版中强制执行。这类文档以可执行的形式组织，通过导入__future__进行可编程式的检查。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;以上是对官方解释的粗略翻译，翻译起来感觉有些拗口。我是这么理解的，某个版本中出现了某个新的功能特性，而且这个特性和当前版本中使用的不兼容，也就是它在该版本中不是语言标准，那么我如果想要使用的话就需要从__future__模块导入。在2.1版本之前并没有__future__，所以使用它会引发异常。当然，在以后的某个版本中，比如说3中，某个特性已经成为标准的一部分，那么使用该特性就不用从__future__导入了。&lt;/p&gt;
+
+&lt;p&gt;下面说一下__future__是如何实现新特性的。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python routes</title>
+      <link>/post/python-routes/</link>
+      <pubDate>Wed, 08 Apr 2015 19:21:51 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-routes/</guid>
+      <description>&lt;h2 id=&#34;ruotes简介&#34;&gt;Ruotes简介&lt;/h2&gt;
+
+&lt;p&gt;Routes解决了一个Web开发中经常遇到的问题，那就是怎么将url请求map到app，也就是，你怎么能说&amp;rsquo;/blog/2008/01/08&amp;rsquo;做这件事，而&amp;rsquo;/login&amp;rsquo;却做另外一个。许多Web框架都有一个内置的调度系统。比如，&amp;rsquo;/A/B/C&amp;rsquo;表示在目录B中读文件C，或者在&amp;rsquo;A.B&amp;rsquo;模块中调用B类的C方法。这样看，毫无问题。但是，当你要重新组织urls的时候，改动就会很大。&lt;/p&gt;
+
+&lt;p&gt;Routes却另辟蹊径。它将url层次和action分离，你可以按照你想要的方式去连接它们。如果你要改变一个特定的url，只要改变route map的一行代码，而不用改变action的逻辑。甚至你可以将多个url指向相同的action。Routes最早起源于Ruby on Rails，到现在已经有很大的不同了。&lt;/p&gt;
+
+&lt;p&gt;Ruotes是Pylons框架最初的调度系统，也是CherrPy的一种调度。所有的Web框架都能用它来处理整个url架构或者是url的subtree。它也可以将subtree指向其他的调度，TurboGear 2在Pylons就是这么实现的。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Paste deployment(转)</title>
+      <link>/post/paste-deploy/</link>
+      <pubDate>Sat, 09 Aug 2014 19:16:16 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/paste-deploy/</guid>
+      <description>&lt;p&gt;转载自&lt;a href=&#34;http://blog.csdn.net/ztejiagn/article/details/8722765&#34;&gt;Python.Paste指南之Deploy&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Paste.Deploy主要是用来载入WSGI中的Web App应用，其核心函数是loadapp(),下文中PD就指代Paste.Deploy。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Openstack oslo.config介绍(转)</title>
+      <link>/post/oslo-config/</link>
+      <pubDate>Fri, 11 Jul 2014 19:15:05 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/oslo-config/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;本文转自&lt;a href=&#34;http://blog.csdn.net/networm3/article/details/8946556&#34;&gt;OpenStack源码探秘（二）——Oslo.config&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;oslo.config, OpenStack中负责CLI和CONF配置项解析的组件。E版本前，这个功能是放在cfg模块中的，
+后来社区中考虑将OpenStack中共性的组件都剥离出来，统一放在oslo模块中。今后开发新的OpenStack组件，估计都要用到Oslo模块。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>url短网址算法python实现</title>
+      <link>/post/swift-short-url/</link>
+      <pubDate>Tue, 10 Jun 2014 19:22:40 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/swift-short-url/</guid>
+      <description>&lt;p&gt;最近在做swift对象存储的共享功能，由于共享url过长，就想到有没有一种缩短的算法。网上查了下，便找到这种url短网址算法。&lt;/p&gt;
+
+&lt;p&gt;算法的基本思路如下：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;短网址一般有6位，假如每一位是由[a-z0-9A-Z]共62个字符组成，一共有62^6~=568亿种组合。&lt;/li&gt;
+&lt;li&gt;将长url存入数据库，用返回的ID转换成6位短url，再将该短url存入数据库，这样就有长短url的映射关系了。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

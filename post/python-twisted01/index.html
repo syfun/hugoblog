@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Twisted源码分析系列01-reactor</title>
+  <meta property="og:title" content="Twisted源码分析系列01-reactor" />
+  <meta name="twitter:title" content="Twisted源码分析系列01-reactor" />
+  <meta name="description" content="简介
+
+Twisted是用Python实现的事件驱动的网络框架。
+
+如果想看教程的话，我觉得写得最好的就是Twisted Introduction了，这是翻译。
+
+">
+  <meta property="og:description" content="简介
+
+Twisted是用Python实现的事件驱动的网络框架。
+
+如果想看教程的话，我觉得写得最好的就是Twisted Introduction了，这是翻译。
+
+">
+  <meta name="twitter:description" content="简介
+
+Twisted是用Python实现的事件驱动的网络框架。
+
+如果想看教程的话，我觉得写得最好的就是Twisted Introduction了，这是翻译。
+
+">
+  <meta name="author" content=""/>
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:url" content="/post/python-twisted01/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Yung Sung" />
+
+  <meta name="generator" content="Hugo 0.21" />
+  <link rel="canonical" href="/post/python-twisted01/" />
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Yung Sung">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="/css/pygment_highlights.css" />
+  <link rel="stylesheet" href="/css/highlight.min.css" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Yung Sung</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>Twisted源码分析系列01-reactor</h1>
+                
+                
+                  <span class="post-meta">
+  Posted on July 14, 2015
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <h2 id="简介">简介</h2>
+
+<p>Twisted是用Python实现的事件驱动的网络框架。</p>
+
+<p>如果想看教程的话，我觉得写得最好的就是<a href="http://krondo.com/?page_id=1327">Twisted Introduction</a>了，这是<a href="https://github.com/syfun/twisted-intro-cn">翻译</a>。</p>
+
+<p></p>
+
+<p>下面就直接进入主题了。</p>
+
+<p>我们通过一个示例开始分析源码，那么先看下面这个示例。</p>
+
+<pre><code class="language-python">#!/usr/bin/env python
+# coding=utf8
+
+from twisted.internet.protocol import Protocol, ServerFactory
+
+
+HOST = '127.0.0.1'
+PORT = 8080
+
+
+class EchoProtocol(Protocol):
+
+    def dataReceived(self, data):
+        self.transport.write(data)
+
+
+if __name__ == '__main__':
+    factory = ServerFactory()
+    factory.protocol = EchoProtocol
+
+    from twisted.internet import reactor
+    reactor.listenTCP(PORT, factory, interface=HOST)
+    reactor.run()
+</code></pre>
+
+<p>这是一个非常简单的Echo server，每当有数据发来，都会将数据往回发。</p>
+
+<h2 id="reactor">reactor</h2>
+
+<p>reactor是事件管理器，用于注册、注销事件，运行事件循环，当事件发生时调用回调函数处理。关于reactor有下面几个结论:</p>
+
+<ol>
+<li>Twisted的reactor只有通过调用reactor.run()来启动。</li>
+<li>reactor循环是在其开始的进程中运行，也就是运行在主进程中。</li>
+<li>一旦启动，就会一直运行下去。reactor就会在程序的控制下（或者具体在一个启动它的线程的控制下）。</li>
+<li>reactor循环并不会消耗任何CPU的资源。</li>
+<li>并不需要显式的创建reactor，只需要引入就OK了。</li>
+</ol>
+
+<p>最后一条需要解释清楚。在Twisted中，reactor是Singleton（也就是单例模式），即在一个程序中只能有一个reactor，并且只要你引入它就相应地创建一个。上面引入的方式这是twisted默认使用的方法，当然了，twisted还有其它可以引入reactor的方法。例如，可以使用twisted.internet.pollreactor中的系统调用来poll来代替select方法。
+若使用其它的reactor，需要在引入twisted.internet.reactor前安装它。下面是安装pollreactor的方法：</p>
+
+<pre><code class="language-python">from twisted.internet import pollreactor
+pollreactor.install()
+</code></pre>
+
+<p>如果你没有安装其它特殊的reactor而引入了twisted.internet.reactor，那么Twisted会根据操作系统安装默认的reactor。正因为如此，习惯性做法不要在最顶层的模块内引入reactor以避免安装默认reactor，而是在你要使用reactor的区域内安装。
+下面是使用 pollreactor重写上上面的程序:tho</p>
+
+<pre><code class="language-python">from twited.internet import pollreactor
+pollreactor.install()
+from twisted.internet import reactor
+reactor.run()
+</code></pre>
+
+<p>那么reactor是如何实现单例的？来看一下from twisted.internet import reactor做了哪些事情就并明白了。</p>
+
+<p>下面是twisted/internet/reactor.py的部分代码:</p>
+
+<pre><code class="language-python"># twisted/internet/reactor.py
+import sys
+del sys.modules['twisted.internet.reactor']
+from twisted.internet import default
+default.install()
+</code></pre>
+
+<p>注：Python中所有加载到内存的模块都放在sys.modules，它是一个全局字典。当import一个模块时首先会在这个列表中查找是否已经加载了此模块，如果加载了则只是将模块的名字加入到正在调用import的模块的命名空间中。如果没有加载则从sys.path目录中按照模块名称查找模块文件，找到后将模块载入内存，并加入到sys.modules中，并将名称导入到当前的命名空间中。</p>
+
+<p>假如我们是第一次运行from twisted.internet import reactor，因为sys.modules中还没有twisted.internet.reactor，所以会运行reactory.py中的代码，安装默认的reactor。之后，如果导入的话，因为sys.modules中已存在该模块，所以会直接将sys.modules中的twisted.internet.reactor导入到当前命名空间。</p>
+
+<p>default中的install：</p>
+
+<pre><code class="language-python"># twisted/internet/default.py
+def _getInstallFunction(platform):
+    &quot;&quot;&quot;
+    Return a function to install the reactor most suited for the given platform.
+
+    @param platform: The platform for which to select a reactor.
+    @type platform: L{twisted.python.runtime.Platform}
+
+    @return: A zero-argument callable which will install the selected
+        reactor.
+    &quot;&quot;&quot;
+    try:
+        if platform.isLinux():
+            try:
+                from twisted.internet.epollreactor import install
+            except ImportError:
+                from twisted.internet.pollreactor import install
+        elif platform.getType() == 'posix' and not platform.isMacOSX():
+            from twisted.internet.pollreactor import install
+        else:
+            from twisted.internet.selectreactor import install
+    except ImportError:
+        from twisted.internet.selectreactor import install
+    return install
+
+
+install = _getInstallFunction(platform)
+</code></pre>
+
+<p>很明显，default中会根据平台获取相应的install。Linux下会首先使用epollreactor，如果内核还不支持，就只能使用pollreactor。Mac平台使用pollreactor，windows使用selectreactor。每种install的实现差不多，这里我们抽取selectreactor中的install来看看。</p>
+
+<pre><code class="language-python"># twisted/internet/selectreactor.py：
+def install():
+    &quot;&quot;&quot;Configure the twisted mainloop to be run using the select() reactor.
+    &quot;&quot;&quot;
+    # 单例
+    reactor = SelectReactor()
+    from twisted.internet.main import installReactor
+    installReactor(reactor)
+
+# twisted/internet/main.py：
+def installReactor(reactor):
+    &quot;&quot;&quot;
+    Install reactor C{reactor}.
+
+    @param reactor: An object that provides one or more IReactor* interfaces.
+    &quot;&quot;&quot;
+    # this stuff should be common to all reactors.
+    import twisted.internet
+    import sys
+    if 'twisted.internet.reactor' in sys.modules:
+        raise error.ReactorAlreadyInstalledError(&quot;reactor already installed&quot;)
+    twisted.internet.reactor = reactor
+    sys.modules['twisted.internet.reactor'] = reactor
+</code></pre>
+
+<p>在installReactor中，向sys.modules添加twisted.internet.reactor键，值就是再install中创建的单例reactor。以后要使用reactor，就会导入这个单例了。</p>
+
+<h2 id="selectreactor">SelectReactor</h2>
+
+<pre><code class="language-python"># twisted/internet/selectreactor.py
+@implementer(IReactorFDSet)
+class SelectReactor(posixbase.PosixReactorBase, _extraBase)
+</code></pre>
+
+<p>implementer表示SelectReactor实现了IReactorFDSet接口的方法，这里用到了<a href="http://docs.zope.org/zope.interface/">zope.interface</a>，它是python中的接口实现，有兴趣的同学可以去看下。</p>
+
+<p>IReactorFDSet接口主要对描述符的获取、添加、删除等操作的方法。这些方法看名字就能知道意思，所以我就没有加注释。</p>
+
+<pre><code class="language-python"># twisted/internet/interfaces.py
+class IReactorFDSet(Interface):
+
+    def addReader(reader):
+
+    def addWriter(writer):
+
+    def removeReader(reader):
+
+    def removeWriter(writer):
+
+    def removeAll():
+
+    def getReaders():
+
+    def getWriters():
+
+</code></pre>
+
+<h3 id="reactor-listentcp">reactor.listenTCP()</h3>
+
+<p>示例中的reactor.listenTCP()注册了一个监听事件，它是父类PosixReactorBase中方法。</p>
+
+<pre><code class="language-python"># twisted/internet/posixbase.py
+@implementer(IReactorTCP, IReactorUDP, IReactorMulticast)
+class PosixReactorBase(_SignalReactorMixin, _DisconnectSelectableMixin,
+                       ReactorBase):
+
+    def listenTCP(self, port, factory, backlog=50, interface=''):
+        p = tcp.Port(port, factory, backlog, interface, self)
+        p.startListening()
+        return p
+
+# twisted/internet/tcp.py
+@implementer(interfaces.IListeningPort)
+class Port(base.BasePort, _SocketCloser):
+    def __init__(self, port, factory, backlog=50, interface='', reactor=None):
+       &quot;&quot;&quot;Initialize with a numeric port to listen on.
+       &quot;&quot;&quot;
+       base.BasePort.__init__(self, reactor=reactor)
+       self.port = port
+       self.factory = factory
+       self.backlog = backlog
+       if abstract.isIPv6Address(interface):
+           self.addressFamily = socket.AF_INET6
+           self._addressType = address.IPv6Address
+       self.interface = interface
+    ...
+
+    def startListening(self):
+       &quot;&quot;&quot;Create and bind my socket, and begin listening on it.
+          创建并绑定套接字，开始监听。
+
+       This is called on unserialization, and must be called after creating a
+       server to begin listening on the specified port.
+       &quot;&quot;&quot;
+       if self._preexistingSocket is None:
+           # Create a new socket and make it listen
+           try:
+               # 创建套接字
+               skt = self.createInternetSocket()
+               if self.addressFamily == socket.AF_INET6:
+                   addr = _resolveIPv6(self.interface, self.port)
+               else:
+                   addr = (self.interface, self.port)
+               # 绑定
+               skt.bind(addr)
+           except socket.error as le:
+               raise CannotListenError(self.interface, self.port, le)
+           # 监听
+           skt.listen(self.backlog)
+       else:
+           # Re-use the externally specified socket
+           skt = self._preexistingSocket
+           self._preexistingSocket = None
+           # Avoid shutting it down at the end.
+           self._shouldShutdown = False
+
+       # Make sure that if we listened on port 0, we update that to
+       # reflect what the OS actually assigned us.
+       self._realPortNumber = skt.getsockname()[1]
+
+       log.msg(&quot;%s starting on %s&quot; % (
+               self._getLogPrefix(self.factory), self._realPortNumber))
+
+       # The order of the next 5 lines is kind of bizarre.  If no one
+       # can explain it, perhaps we should re-arrange them.
+       self.factory.doStart()
+       self.connected = True
+       self.socket = skt
+       self.fileno = self.socket.fileno
+       self.numberAccepts = 100
+
+       # startReading调用reactor的addReader方法将Port加入读集合
+       self.startReading()
+</code></pre>
+
+<p>整个逻辑很简单，和正常的server端一样，创建套接字、绑定、监听。不同的是将套接字的描述符添加到了reactor的读集合。那么假如有了client连接过来的话，reactor会监控到，然后触发事件处理程序。</p>
+
+<h2 id="reacotr-run-事件主循环">reacotr.run()事件主循环</h2>
+
+<pre><code class="language-python"># twisted/internet/posixbase.py
+@implementer(IReactorTCP, IReactorUDP, IReactorMulticast)
+class PosixReactorBase(_SignalReactorMixin, _DisconnectSelectableMixin,
+                       ReactorBase)
+
+# twisted/internet/base.py
+class _SignalReactorMixin(object):
+
+    def startRunning(self, installSignalHandlers=True):
+        &quot;&quot;&quot;
+        PosixReactorBase的父类_SignalReactorMixin和ReactorBase都有该函数，但是
+        _SignalReactorMixin在前，安装mro顺序的话，会先调用_SignalReactorMixin中的。
+        &quot;&quot;&quot;
+        self._installSignalHandlers = installSignalHandlers
+        ReactorBase.startRunning(self)
+
+    def run(self, installSignalHandlers=True):
+        self.startRunning(installSignalHandlers=installSignalHandlers)
+        self.mainLoop()
+
+    def mainLoop(self):
+        while self._started:
+            try:
+                while self._started:
+                    # Advance simulation time in delayed event
+                    # processors.
+                    self.runUntilCurrent()
+                    t2 = self.timeout()
+                    t = self.running and t2
+                    # doIteration是关键，select,poll,epool实现各有不同
+                    self.doIteration(t)
+            except:
+                log.msg(&quot;Unexpected error in main loop.&quot;)
+                log.err()
+            else:
+                log.msg('Main loop terminated.')
+</code></pre>
+
+<p>mianLoop就是最终的主循环了，在循环中，调用doIteration方法监控读写描述符的集合，一旦发现有描述符准备好读写，就会调用相应的事件处理程序。</p>
+
+<pre><code class="language-python"># twisted/internet/selectreactor.py
+@implementer(IReactorFDSet)
+class SelectReactor(posixbase.PosixReactorBase, _extraBase):
+
+    def __init__(self):
+        &quot;&quot;&quot;
+        Initialize file descriptor tracking dictionaries and the base class.
+        &quot;&quot;&quot;
+        self._reads = set()
+        self._writes = set()
+        posixbase.PosixReactorBase.__init__(self)
+
+    def doSelect(self, timeout):
+        &quot;&quot;&quot;
+        Run one iteration of the I/O monitor loop.
+
+        This will run all selectables who had input or output readiness
+        waiting for them.
+        &quot;&quot;&quot;
+        try:
+            # 调用select方法监控读写集合，返回准备好读写的描述符
+            r, w, ignored = _select(self._reads,
+                                    self._writes,
+                                    [], timeout)
+        except ValueError:
+            # Possibly a file descriptor has gone negative?
+            self._preenDescriptors()
+            return
+        except TypeError:
+            # Something *totally* invalid (object w/o fileno, non-integral
+            # result) was passed
+            log.err()
+            self._preenDescriptors()
+            return
+        except (select.error, socket.error, IOError) as se:
+            # select(2) encountered an error, perhaps while calling the fileno()
+            # method of a socket.  (Python 2.6 socket.error is an IOError
+            # subclass, but on Python 2.5 and earlier it is not.)
+            if se.args[0] in (0, 2):
+                # windows does this if it got an empty list
+                if (not self._reads) and (not self._writes):
+                    return
+                else:
+                    raise
+            elif se.args[0] == EINTR:
+                return
+            elif se.args[0] == EBADF:
+                self._preenDescriptors()
+                return
+            else:
+                # OK, I really don't know what's going on.  Blow up.
+                raise
+
+        _drdw = self._doReadOrWrite
+        _logrun = log.callWithLogger
+        for selectables, method, fdset in ((r, &quot;doRead&quot;, self._reads),
+                                           (w,&quot;doWrite&quot;, self._writes)):
+            for selectable in selectables:
+                # if this was disconnected in another thread, kill it.
+                # ^^^^ --- what the !@#*?  serious!  -exarkun
+                if selectable not in fdset:
+                    continue
+                # This for pausing input when we're not ready for more.
+
+                # 调用_doReadOrWrite方法
+                _logrun(selectable, _drdw, selectable, method)
+
+    doIteration = doSelect
+
+    def _doReadOrWrite(self, selectable, method):
+        try:
+            # 调用method，doRead或者是doWrite，
+            # 这里的selectable可能是我们监听的tcp.Port
+            why = getattr(selectable, method)()
+        except:
+            why = sys.exc_info()[1]
+            log.err()
+        if why:
+            self._disconnectSelectable(selectable, why, method==&quot;doRead&quot;)
+</code></pre>
+
+<p>那么假如客户端有连接请求了，就会调用读集合中tcp.Port的doRead方法。</p>
+
+<pre><code class="language-python"># twisted/internet/tcp.py
+
+@implementer(interfaces.IListeningPort)
+class Port(base.BasePort, _SocketCloser):
+
+    def doRead(self):
+        &quot;&quot;&quot;Called when my socket is ready for reading.
+        当套接字准备好读的时候调用
+
+        This accepts a connection and calls self.protocol() to handle the
+        wire-level protocol.
+        &quot;&quot;&quot;
+        try:
+            if platformType == &quot;posix&quot;:
+                numAccepts = self.numberAccepts
+            else:
+                numAccepts = 1
+            for i in range(numAccepts):
+                if self.disconnecting:
+                    return
+                try:
+                    # 调用accept
+                    skt, addr = self.socket.accept()
+                except socket.error as e:
+                    if e.args[0] in (EWOULDBLOCK, EAGAIN):
+                        self.numberAccepts = i
+                        break
+                    elif e.args[0] == EPERM:
+                        continue
+                    elif e.args[0] in (EMFILE, ENOBUFS, ENFILE, ENOMEM, ECONNABORTED):
+                        log.msg(&quot;Could not accept new connection (%s)&quot; % (
+                            errorcode[e.args[0]],))
+                        break
+                    raise
+
+                fdesc._setCloseOnExec(skt.fileno())
+                protocol = self.factory.buildProtocol(self._buildAddr(addr))
+                if protocol is None:
+                    skt.close()
+                    continue
+                s = self.sessionno
+                self.sessionno = s+1
+                # transport初始化的过程中，会将自身假如到reactor的读集合中，那么当它准备
+                # 好读的时候，就可以调用它的doRead方法读取客户端发过来的数据了
+                transport = self.transport(skt, protocol, addr, self, s, self.reactor)
+                protocol.makeConnection(transport)
+            else:
+                self.numberAccepts = self.numberAccepts+20
+        except:
+            log.deferr()
+</code></pre>
+
+<p>doRead方法中，调用accept产生了用于接收客户端数据的套接字，将套接字与transport绑定，然后把transport加入到reactor的读集合。当客户端有数据到来时，就会调用transport的doRead方法进行数据读取了。</p>
+
+<p>Connection是Server（transport实例的类）的父类，它实现了doRead方法。</p>
+
+<pre><code class="language-python"># twisted/internet/tcp.py
+@implementer(interfaces.ITCPTransport, interfaces.ISystemHandle)
+class Connection(_TLSConnectionMixin, abstract.FileDescriptor, _SocketCloser,
+                 _AbortingMixin):
+
+    def doRead(self):
+        try:
+            # 接收数据
+            data = self.socket.recv(self.bufferSize)
+        except socket.error as se:
+            if se.args[0] == EWOULDBLOCK:
+                return
+            else:
+                return main.CONNECTION_LOST
+
+        return self._dataReceived(data)
+
+    def _dataReceived(self, data):
+        if not data:
+            return main.CONNECTION_DONE
+        # 调用我们自定义protocol的dataReceived方法处理数据
+        rval = self.protocol.dataReceived(data)
+        if rval is not None:
+            offender = self.protocol.dataReceived
+            warningFormat = (
+                'Returning a value other than None from %(fqpn)s is '
+                'deprecated since %(version)s.')
+            warningString = deprecate.getDeprecationWarningString(
+                offender, versions.Version('Twisted', 11, 0, 0),
+                format=warningFormat)
+            deprecate.warnAboutFunction(offender, warningString)
+        return rval
+</code></pre>
+
+<p>_dataReceived中调用了示例中我们自定义的EchoProtocol的dataReceived方法处理数据。</p>
+
+<p>至此，一个简单的流程，从创建监听事件，到接收客户端数据就此结束了。</p>
+
+<p>一些细节的地方我并未说明，这里只是说明一个大概的流程，想看的细一点的，可以直接跟着这个流程去看源码。</p>
+
+<p>这个系列应该会不定时更新，如果有人感兴趣的，也可以和我直接交流。</p>
+      </article>
+
+      <ul class="pager blog-pager">
+        
+          <li class="previous">
+            <a href="/post/python-with/" data-toggle="tooltip" data-placement="top" title="浅谈Python的with语句(转载)">&larr; Previous Post</a>
+          </li>
+        
+        
+          <li class="next">
+            <a href="/post/python-bibao/" data-toggle="tooltip" data-placement="top" title="Python闭包的作用域理解">Next Post &rarr;</a>
+          </li>
+        
+      </ul>
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:sunyu418@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/syfun" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+          &nbsp;&bull;&nbsp;
+          2017
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="/">Yung Sung</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.21</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/main.js"></script>
+<script src="/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.js" integrity="sha256-UplRCs9v4KXVJvVY+p+RSo5Q4ilAUXh7kpjyIP5odyc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe-ui-default.min.js" integrity="sha256-PWHOlUzc96pMc8ThwRIXPn8yH4NOLu42RQ0b9SpnpFk=" crossorigin="anonymous"></script>
+<script src="/js/load-photoswipe.js"></script>
+
+
+
+  </body>
+</html>
+
