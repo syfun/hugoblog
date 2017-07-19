@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>其他 on Sung Yung</title>
+    <title>其他 on Yung Sung</title>
     <link>/categories/%E5%85%B6%E4%BB%96/</link>
-    <description>Recent content in 其他 on Sung Yung</description>
+    <description>Recent content in 其他 on Yung Sung</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <managingEditor>sunyu418@gmail.com</managingEditor>
+    <webMaster>sunyu418@gmail.com</webMaster>
     <lastBuildDate>Wed, 17 Jun 2015 22:01:25 +0800</lastBuildDate>
     
 	<atom:link href="/categories/%E5%85%B6%E4%BB%96/index.xml" rel="self" type="application/rss+xml" />
@@ -15,7 +16,7 @@
       <title>C语言可变参数</title>
       <link>/post/c-args/</link>
       <pubDate>Wed, 17 Jun 2015 22:01:25 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/c-args/</guid>
       <description>&lt;p&gt;在python中写一个有可变参数的函数或者方法是很容易的，比如下面这个例子:&lt;/p&gt;
 
@@ -45,7 +46,7 @@ x = 4
       <title>使用pgpool&#43;流复制搭建Postgresql高可用环境</title>
       <link>/post/pgpool/</link>
       <pubDate>Sun, 10 May 2015 19:18:40 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/pgpool/</guid>
       <description>&lt;p&gt;研究了2周的pgpool搭建终于有点了成果，在这里总结下整个过程。&lt;/p&gt;
 
@@ -68,7 +69,7 @@ x = 4
       <title>Postgresql子进程启动</title>
       <link>/post/pg-subprocess/</link>
       <pubDate>Sun, 05 Apr 2015 19:19:35 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/pg-subprocess/</guid>
       <description>&lt;p&gt;PG是多进程的运行模式，除了Postmaster主进程外，还有以下子进程：&lt;/p&gt;
 
@@ -93,7 +94,7 @@ x = 4
       <title>使用VS2013编译安装postgresql</title>
       <link>/post/vs-build-pg/</link>
       <pubDate>Tue, 10 Mar 2015 19:24:26 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/vs-build-pg/</guid>
       <description>&lt;p&gt;整理一下在windows平台下使用vs2013编译安装postgresql的步骤，postgresql版本是9.4.0。&lt;/p&gt;
 

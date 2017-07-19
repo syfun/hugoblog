@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Python on Sung Yung</title>
+    <title>Python on Yung Sung</title>
     <link>/categories/python/</link>
-    <description>Recent content in Python on Sung Yung</description>
+    <description>Recent content in Python on Yung Sung</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <managingEditor>sunyu418@gmail.com</managingEditor>
+    <webMaster>sunyu418@gmail.com</webMaster>
     <lastBuildDate>Sat, 08 Aug 2015 22:27:41 +0800</lastBuildDate>
     
 	<atom:link href="/categories/python/index.xml" rel="self" type="application/rss+xml" />
@@ -15,7 +16,7 @@
       <title>Pythons HOWTO之属性描述符</title>
       <link>/post/python-howto-descriptor/</link>
       <pubDate>Sat, 08 Aug 2015 22:27:41 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/python-howto-descriptor/</guid>
       <description>&lt;p&gt;今天开个新坑，Pythons HOWTOS系列，主要是对官方文档的翻译。由于英语水平有限，基本上都是意译。这里附上&lt;a href=&#34;https://docs.python.org/2.7/howto/index.html&#34;&gt;链接&lt;/a&gt;。&lt;/p&gt;
 
@@ -28,7 +29,7 @@
       <title>Python装饰器的几种类型</title>
       <link>/post/python-decorate/</link>
       <pubDate>Mon, 27 Jul 2015 22:25:34 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/python-decorate/</guid>
       <description>&lt;p&gt;装饰器的原理就是闭包，这在&lt;a href=&#34;/post/python-bibao/&#34;&gt;前面&lt;/a&gt;已经提到过了。本篇主要记录一下装饰器的几种类型。&lt;/p&gt;
 
@@ -57,7 +58,7 @@ test = deco(func)
       <title>Python闭包的作用域理解</title>
       <link>/post/python-bibao/</link>
       <pubDate>Wed, 22 Jul 2015 22:23:31 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/python-bibao/</guid>
       <description>&lt;h2 id=&#34;什么是闭包&#34;&gt;什么是闭包&lt;/h2&gt;
 
@@ -74,7 +75,7 @@ test = deco(func)
       <title>Twisted源码分析系列01-reactor</title>
       <link>/post/python-twisted01/</link>
       <pubDate>Tue, 14 Jul 2015 22:22:03 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/python-twisted01/</guid>
       <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
 
@@ -89,7 +90,7 @@ test = deco(func)
       <title>浅谈Python的with语句(转载)</title>
       <link>/post/python-with/</link>
       <pubDate>Tue, 07 Jul 2015 22:20:10 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/python-with/</guid>
       <description>&lt;p&gt;本文转自&lt;a href=&#34;http://www.ibm.com/developerworks/cn/opensource/os-cn-pythonwith/&#34;&gt;浅谈Python的with语句&lt;/a&gt;&lt;/p&gt;
 
@@ -104,7 +105,7 @@ test = deco(func)
       <title>Python __future__ 模块</title>
       <link>/post/python-future/</link>
       <pubDate>Fri, 03 Jul 2015 22:18:29 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/python-future/</guid>
       <description>&lt;p&gt;在Python2.7代码中经常能看到使用__future__模块。那么__future__到底是做什么的呢？&lt;/p&gt;
 
@@ -129,7 +130,7 @@ test = deco(func)
       <title>Python routes</title>
       <link>/post/python-routes/</link>
       <pubDate>Wed, 08 Apr 2015 19:21:51 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/python-routes/</guid>
       <description>&lt;h2 id=&#34;ruotes简介&#34;&gt;Ruotes简介&lt;/h2&gt;
 
@@ -146,7 +147,7 @@ test = deco(func)
       <title>Python argparse</title>
       <link>/post/python-argparse/</link>
       <pubDate>Thu, 02 Apr 2015 19:21:04 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/python-argparse/</guid>
       <description>&lt;p&gt;最近在看openstack cinderclient代码，就顺带着看了下argparse。argparse是Python官方推荐的命令行解析工具库。&lt;/p&gt;
 
@@ -159,7 +160,7 @@ test = deco(func)
       <title>url短网址算法python实现</title>
       <link>/post/swift-short-url/</link>
       <pubDate>Tue, 10 Jun 2014 19:22:40 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/post/swift-short-url/</guid>
       <description>&lt;p&gt;最近在做swift对象存储的共享功能，由于共享url过长，就想到有没有一种缩短的算法。网上查了下，便找到这种url短网址算法。&lt;/p&gt;
 

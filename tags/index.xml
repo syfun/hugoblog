@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Sung Yung</title>
+    <title>Tags on Yung Sung</title>
     <link>/tags/</link>
-    <description>Recent content in Tags on Sung Yung</description>
+    <description>Recent content in Tags on Yung Sung</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <managingEditor>sunyu418@gmail.com</managingEditor>
+    <webMaster>sunyu418@gmail.com</webMaster>
     <lastBuildDate>Fri, 03 Mar 2017 19:10:15 +0800</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
@@ -15,7 +16,7 @@
       <title>Python</title>
       <link>/tags/python/</link>
       <pubDate>Fri, 03 Mar 2017 19:10:15 +0800</pubDate>
-      
+      <author>sunyu418@gmail.com</author>
       <guid>/tags/python/</guid>
       <description></description>
     </item>
