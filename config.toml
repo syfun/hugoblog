@@ -1,31 +1,30 @@
 baseurl = "/"
-title = "Sung Yung"
-languageCode = "en-us"
-paginate = "10" # Number of posts per page
-theme = "mainroad"
+theme = "beautifulhugo"
+author = "Yung Sung"
+title = "Yung Sung"
+tags = ["python"]
+metaDataFormat = "yaml"
+pygmentsUseClasses = true
+pygmentCodeFences = true
 
-googleAnalytics = "" # Enable Google Analytics by entering your tracking id
+[params]
+subtitle = "知其然，知其所以然"
 
 [Author]
-    name = "Sung Yung"
-    bio = "一枚Pythoner，热爱编程，喜欢新东西（当然女朋友不用）。"
-    avatar = "img/sy.jpg"
+email = "sunyu418@gmail.com"
+github = "syfun"
 
+[[menu.main]]
+name = "Blog"
+url = ""
+weight = 1
 
-[Params]
-    subtitle = "人生苦短，我爱Python" # Subtitle of your site
-    description = " Sung Yung's Personal blog about everything" # Description of your site
-    opengraph = true
-    leftsidebar = false # Move sidebar to the left side if true
-    authorbox = true
-    post_navigation = true
-    disable_comments = false
-    duoshuoShortname = "sungyung" # Enable comments by entering your Disqus shortname
+[[menu.main]]
+name = "About"
+url = "/about/"
+weight = 3
 
-
-[Params.widgets]
-    search = true # Enable "Search" widget
-    recent_articles = true # Enable "Recent arcticles" widget
-    categories = true # Enable "Categories" widget
-    tags = true # Enable "Tags" widget
-        tags_counter = false # Enable counter for each tag in "Tags" widget (disabled by default)
+[[menu.main]]
+name = "Tags"
+url = "tags"
+weight = 3
