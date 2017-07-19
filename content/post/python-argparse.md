@@ -4,7 +4,7 @@ date = "2015-04-02T19:21:04+08:00"
 description = ""
 title = "Python argparse"
 thumbnail = ""
-tags = []
+tags = ["ptyhon"]
 
 +++
 

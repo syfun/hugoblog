@@ -3,7 +3,7 @@ date = "2015-11-16T18:55:12+08:00"
 description = ""
 title = "Openstack Deb打包"
 thumbnail = ""
-tags = []
+tags = ["云计算"]
 categories = ["云计算"]
 draft = true
 +++

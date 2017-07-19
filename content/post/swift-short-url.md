@@ -4,7 +4,7 @@ date = "2014-06-10T19:22:40+08:00"
 description = ""
 title = "url短网址算法python实现"
 thumbnail = ""
-tags = []
+tags = ["python"]
 
 +++
 

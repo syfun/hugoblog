@@ -1,5 +1,5 @@
 +++
-tags = []
+tags = ["其他"]
 categories = ["其他"]
 date = "2017-03-08T19:08:50+08:00"
 description = ""

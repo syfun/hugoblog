@@ -4,7 +4,7 @@ date = "2015-06-24T22:05:33+08:00"
 description = ""
 title = "深入CloudFoundry一周年（转载）"
 thumbnail = ""
-tags = []
+tags = ["云计算"]
 
 +++
 

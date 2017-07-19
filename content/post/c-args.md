@@ -1,10 +1,9 @@
 +++
-categories = ["其他"]
 date = "2015-06-17T22:01:25+08:00"
 description = ""
 title = "C语言可变参数"
 thumbnail = ""
-tags = []
+tags = ["其他"]
 
 +++
 

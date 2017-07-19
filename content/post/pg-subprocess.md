@@ -3,7 +3,7 @@ date = "2015-04-05T19:19:35+08:00"
 description = ""
 title = "Postgresql子进程启动"
 thumbnail = ""
-tags = []
+tags = ["其他”]
 categories = ["其他"]
 
 +++

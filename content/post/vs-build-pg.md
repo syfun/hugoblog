@@ -4,7 +4,7 @@ date = "2015-03-10T19:24:26+08:00"
 description = ""
 title = "使用VS2013编译安装postgresql"
 thumbnail = ""
-tags = []
+tags = ["其他"]
 
 +++
 

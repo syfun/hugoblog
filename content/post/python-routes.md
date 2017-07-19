@@ -3,7 +3,7 @@ date = "2015-04-08T19:21:51+08:00"
 description = ""
 title = "Python routes"
 thumbnail = ""
-tags = []
+tags = ["python"]
 categories = ["Python"]
 
 +++

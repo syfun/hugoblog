@@ -1,6 +1,6 @@
 +++
 thumbnail = ""
-tags = []
+tags = ["云计算"]
 categories = ["云计算"]
 date = "2014-05-11T19:23:24+08:00"
 description = ""

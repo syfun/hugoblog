@@ -1,10 +1,9 @@
 +++
-categories = ["云计算"]
 date = "2015-11-05T18:51:10+08:00"
 description = ""
 title = "Openstack Cinder管理二三事(Liberty版本)"
 thumbnail = ""
-tags = []
+tags = ["云计算"]
 draft = true
 +++
 

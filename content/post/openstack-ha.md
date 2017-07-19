@@ -1,7 +1,7 @@
 +++
 title = "Openstack HA环境搭建"
 thumbnail = ""
-tags = []
+tags = ["云计算"]
 categories = ["云计算"]
 date = "2015-11-25T19:01:12+08:00"
 description = ""

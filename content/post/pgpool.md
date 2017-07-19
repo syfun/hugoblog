@@ -1,6 +1,6 @@
 +++
 thumbnail = ""
-tags = []
+tags = ["其他"]
 categories = ["其他"]
 date = "2015-05-10T19:18:40+08:00"
 description = ""

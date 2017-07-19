@@ -1,5 +1,5 @@
 +++
-tags = []
+tags = ["云计算"]
 categories = ["云计算"]
 date = "2015-06-26T22:12:41+08:00"
 description = ""
