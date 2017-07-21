@@ -1,5 +1,5 @@
 +++
-date = "2017-03-03T19:10:15+08:00"
+date = "2016-10-22T19:10:15+08:00"
 description = ""
 title = "Python Week 0001 --- property"
 thumbnail = ""
