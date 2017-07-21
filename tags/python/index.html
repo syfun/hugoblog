@@ -155,6 +155,53 @@
         <div class="posts-list">
           
             <article class="post-preview">
+              <a href="/post/python-week0002-utf8jsonwrite/">
+                <h2 class="post-title">Python Week 0002 --- Write UTF-8 Json Data to File</h2>
+    
+                
+              </a>
+    
+              <p class="post-meta">
+                Posted on October 30, 2016
+              </p>
+              <div class="post-entry">
+                
+                  <h3 id="question">Question</h3>
+
+<p>最近遇到个问题，在Mongo导出的json文件里, 用编辑器打开中文是可以正常显示的。但是我自己直接写入文件中却是&rdquo;\u4f60&rdquo;这样的形式。</p>
+
+<pre><code class="language-python">import json
+
+d = {'你好': 'Python3'}
+
+with open('out.json', 'w') as f:
+    f.write(json.dumps(d))
+
+with open('out.json', 'r') as f:
+    print(f.read())
+</code></pre>
+
+<pre><code class="language-shell">{&quot;\u4f60\u597d&quot;: &quot;Python3&quot;}
+</code></pre>
+
+<p>最后打印的值并不是中文。</p>
+
+<p></p>
+                  <a href="/post/python-week0002-utf8jsonwrite/" class="post-read-more">[Read More]</a>
+                
+              </div>
+    
+              
+                <span class="post-meta">
+                  
+                    #<a href="/tags/python">Python</a>&nbsp;
+                  
+                </span>
+              
+    
+            </article>
+          
+            <article class="post-preview">
               <a href="/post/python-property/">
                 <h2 class="post-title">Python Week 0001 --- property</h2>
     
@@ -162,7 +209,7 @@
               </a>
     
               <p class="post-meta">
-                Posted on March 3, 2017
+                Posted on October 22, 2016
               </p>
               <div class="post-entry">
                 
@@ -475,38 +522,6 @@ test = deco(func)
     
             </article>
           
-            <article class="post-preview">
-              <a href="/post/oslo-config/">
-                <h2 class="post-title">Openstack oslo.config介绍(转)</h2>
-    
-                
-              </a>
-    
-              <p class="post-meta">
-                Posted on July 11, 2014
-              </p>
-              <div class="post-entry">
-                
-                  <p><strong>本文转自<a href="http://blog.csdn.net/networm3/article/details/8946556">OpenStack源码探秘（二）——Oslo.config</a></strong></p>
-
-<p>oslo.config, OpenStack中负责CLI和CONF配置项解析的组件。E版本前，这个功能是放在cfg模块中的，
-后来社区中考虑将OpenStack中共性的组件都剥离出来，统一放在oslo模块中。今后开发新的OpenStack组件，估计都要用到Oslo模块。</p>
-
-<p></p>
-                  <a href="/post/oslo-config/" class="post-read-more">[Read More]</a>
-                
-              </div>
-    
-              
-                <span class="post-meta">
-                  
-                    #<a href="/tags/python">Python</a>&nbsp;
-                  
-                </span>
-              
-    
-            </article>
-          
         </div>
         
           <ul class="pager main-pager">
@@ -579,6 +594,9 @@ test = deco(func)
 <script src="/js/load-photoswipe.js"></script>
 
 
+<script src="http://localhost:8080/js/embed.dev.js"></script>
+
+<section id="isso-thread"></section>
 
   </body>
 </html>

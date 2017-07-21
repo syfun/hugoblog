@@ -7,15 +7,44 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sunyu418@gmail.com</managingEditor>
     <webMaster>sunyu418@gmail.com</webMaster>
-    <lastBuildDate>Fri, 03 Mar 2017 19:10:15 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 30 Oct 2016 16:03:12 +0800</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Python Week 0002 --- Write UTF-8 Json Data to File</title>
+      <link>/post/python-week0002-utf8jsonwrite/</link>
+      <pubDate>Sun, 30 Oct 2016 16:03:12 +0800</pubDate>
+      <author>sunyu418@gmail.com</author>
+      <guid>/post/python-week0002-utf8jsonwrite/</guid>
+      <description>&lt;h3 id=&#34;question&#34;&gt;Question&lt;/h3&gt;
+
+&lt;p&gt;最近遇到个问题，在Mongo导出的json文件里, 用编辑器打开中文是可以正常显示的。但是我自己直接写入文件中却是&amp;rdquo;\u4f60&amp;rdquo;这样的形式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import json
+
+d = {&#39;你好&#39;: &#39;Python3&#39;}
+
+with open(&#39;out.json&#39;, &#39;w&#39;) as f:
+    f.write(json.dumps(d))
+
+with open(&#39;out.json&#39;, &#39;r&#39;) as f:
+    print(f.read())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;{&amp;quot;\u4f60\u597d&amp;quot;: &amp;quot;Python3&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后打印的值并不是中文。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Python Week 0001 --- property</title>
       <link>/post/python-property/</link>
-      <pubDate>Fri, 03 Mar 2017 19:10:15 +0800</pubDate>
+      <pubDate>Sat, 22 Oct 2016 19:10:15 +0800</pubDate>
       <author>sunyu418@gmail.com</author>
       <guid>/post/python-property/</guid>
       <description>&lt;p&gt;博客搭了有好久了，都是断断续续的写，甚至大半年没有新的内容。已经掌握的或者是新学习的，没有记录一旦长时间不用就会忘掉，毕竟还没有形成本能。所以还是想记录一些东西吧。哈哈，其实还有个原因就是写了没人看哈，然后就没动力了。&lt;/p&gt;

@@ -175,13 +175,61 @@
           
           
             <article class="post-preview">
+              <a href="/post/python-week0002-utf8jsonwrite/">
+                <h2 class="post-title">Python Week 0002 --- Write UTF-8 Json Data to File</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  Posted on October 30, 2016
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <h3 id="question">Question</h3>
+
+<p>最近遇到个问题，在Mongo导出的json文件里, 用编辑器打开中文是可以正常显示的。但是我自己直接写入文件中却是&rdquo;\u4f60&rdquo;这样的形式。</p>
+
+<pre><code class="language-python">import json
+
+d = {'你好': 'Python3'}
+
+with open('out.json', 'w') as f:
+    f.write(json.dumps(d))
+
+with open('out.json', 'r') as f:
+    print(f.read())
+</code></pre>
+
+<pre><code class="language-shell">{&quot;\u4f60\u597d&quot;: &quot;Python3&quot;}
+</code></pre>
+
+<p>最后打印的值并不是中文。</p>
+
+<p></p>
+                  <a href="/post/python-week0002-utf8jsonwrite/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="/tags/python">Python</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
               <a href="/post/python-property/">
                 <h2 class="post-title">Python Week 0001 --- property</h2>
                 
               </a>
 
               <span class="post-meta">
-  Posted on March 3, 2017
+  Posted on October 22, 2016
   
 </span>
 
@@ -503,46 +551,6 @@ test = deco(func)
               
             </article>
           
-            <article class="post-preview">
-              <a href="/post/cloudfoundry/">
-                <h2 class="post-title">深入CloudFoundry一周年（转载）</h2>
-                
-              </a>
-
-              <span class="post-meta">
-  Posted on June 24, 2015
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p>本文转自<a href="http://ju.outofmemory.cn/entry/22259">深入CloudFoundry一周年（原版）</a>，有些地方稍微做些修改，毕竟是几年前的文章了。</p>
-
-<h2 id="篇前语">篇前语</h2>
-
-<p>本文在《程序员》杂志2013年1月刊刊登过，但由于篇幅排版等原因，部份内容被删除。研究院博客这次发表的版本是原稿版。可能文笔措辞有些许粗糙，但希望能给大家带来更详尽的信息。</p>
-
-<h2 id="前言">前言</h2>
-
-<p>2012年4月份，VMware突然发布了业内第一个开源的PaaS，Cloud Foundry；紧接着5月，Redhat发布了另外一个开源的PaaS，OpenShift。从此PaaS不再神秘，开始成为技术圈内的热议话题。我们研究院在CloudFoundry发布时就开始投入研究，在实验室内部署了基于Cloud Foundry私有的PaaS。到了10月份，我们总结部份研究成果，整理成博客发表在研究院的轻微博上。</p>
-
-<p>Cloud Foundry经过一年多的发展，文章内很多内容都已经不合时宜，这篇一周年特别版的结构重新整理，文章内容部份借鉴我的同事颜开所写的《新版CloudFoundry揭秘》以及一些同行的文章、演讲进行改写；加入部份笔者在OpenStack APAC会议上所作报告《ElasticArchitecture in Cloud Foundry and Deploy with OpenStack》内容，而CloudFoundry的安装配置、扩展运行时、自定义服务等内容，本专栏会有后续专文介绍，这里就不再重复。</p>
-
-<p></p>
-                  <a href="/post/cloudfoundry/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97">云计算</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
         </div>
 
         
@@ -616,6 +624,9 @@ test = deco(func)
 <script src="/js/load-photoswipe.js"></script>
 
 
+<script src="http://localhost:8080/js/embed.dev.js"></script>
+
+<section id="isso-thread"></section>
 
   </body>
 </html>

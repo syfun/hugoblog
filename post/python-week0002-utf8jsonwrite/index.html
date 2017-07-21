@@ -5,17 +5,71 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>Tags</title>
-  <meta property="og:title" content="Tags" />
-  <meta name="twitter:title" content="Tags" />
+  <title>Python Week 0002 --- Write UTF-8 Json Data to File</title>
+  <meta property="og:title" content="Python Week 0002 --- Write UTF-8 Json Data to File" />
+  <meta name="twitter:title" content="Python Week 0002 --- Write UTF-8 Json Data to File" />
+  <meta name="description" content="Question
+
+最近遇到个问题，在Mongo导出的json文件里, 用编辑器打开中文是可以正常显示的。但是我自己直接写入文件中却是&rdquo;\u4f60&rdquo;这样的形式。
+
+import json
+
+d = {&#39;你好&#39;: &#39;Python3&#39;}
+
+with open(&#39;out.json&#39;, &#39;w&#39;) as f:
+    f.write(json.dumps(d))
+
+with open(&#39;out.json&#39;, &#39;r&#39;) as f:
+    print(f.read())
+
+
+{&quot;\u4f60\u597d&quot;: &quot;Python3&quot;}
+
+
+最后打印的值并不是中文。
+
+">
+  <meta property="og:description" content="Question
+
+最近遇到个问题，在Mongo导出的json文件里, 用编辑器打开中文是可以正常显示的。但是我自己直接写入文件中却是&rdquo;\u4f60&rdquo;这样的形式。
+
+import json
+
+d = {&#39;你好&#39;: &#39;Python3&#39;}
+
+with open(&#39;out.json&#39;, &#39;w&#39;) as f:
+    f.write(json.dumps(d))
+
+with open(&#39;out.json&#39;, &#39;r&#39;) as f:
+    print(f.read())
+
+
+{&quot;\u4f60\u597d&quot;: &quot;Python3&quot;}
+
+
+最后打印的值并不是中文。
+
+">
+  <meta name="twitter:description" content="Question
+
+最近遇到个问题，在Mongo导出的json文件里, 用编辑器打开中文是可以正常显示的。但是我自己直接写入文件中却是&rdquo;\u4f60&rdquo;这样的形式。
+
+import json
+
+d = {&#39;你好&#39;: &#39;Python3&#39;}
+
+with open(&#39;out.json&#39;, &#39;w&#39;) as f:
+    f.write(json.dumps(d))
+
+with …">
   <meta name="author" content=""/>
   <meta name="twitter:card" content="summary" />
-  <meta property="og:url" content="/tags/" />
+  <meta property="og:url" content="/post/python-week0002-utf8jsonwrite/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Yung Sung" />
 
   <meta name="generator" content="Hugo 0.21" />
-  <link rel="canonical" href="/tags/" />
+  <link rel="canonical" href="/post/python-week0002-utf8jsonwrite/" />
   <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Yung Sung">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -148,9 +202,16 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="page-heading">
-              <h1>Tags</h1>
+            <div class="post-heading">
+              <h1>Python Week 0002 --- Write UTF-8 Json Data to File</h1>
                 
+                
+                  <span class="post-meta">
+  Posted on October 30, 2016
+  
+</span>
+
+
                 
             </div>
           </div>
@@ -161,26 +222,121 @@
 
 
     
-  
-  <div class="container" role="main">
-    <article class="post-preview">
-      <div class="list-group col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3">
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <h3 id="question">Question</h3>
+
+<p>最近遇到个问题，在Mongo导出的json文件里, 用编辑器打开中文是可以正常显示的。但是我自己直接写入文件中却是&rdquo;\u4f60&rdquo;这样的形式。</p>
+
+<pre><code class="language-python">import json
+
+d = {'你好': 'Python3'}
+
+with open('out.json', 'w') as f:
+    f.write(json.dumps(d))
+
+with open('out.json', 'r') as f:
+    print(f.read())
+</code></pre>
+
+<pre><code class="language-shell">{&quot;\u4f60\u597d&quot;: &quot;Python3&quot;}
+</code></pre>
+
+<p>最后打印的值并不是中文。</p>
+
+<p></p>
+
+<h3 id="method">Method</h3>
+
+<p>我猜测有两处可能有两处原因。</p>
+
+<ol>
+<li>json dumps返回的值不包含中文</li>
+<li>写入文件的时候转换成了ASCII形式</li>
+</ol>
+
+<p>针对第一点，我们来测试一下。</p>
+
+<pre><code class="language-python">import json
+
+d = {'你好': 'Python3'}
+b = json.dumps(d)
+print(b)
+</code></pre>
+
+<pre><code class="language-shell">{&quot;\u4f60\u597d&quot;: &quot;Python3&quot;}
+</code></pre>
+
+<p>咦，这个时候值已经变成了ASCII形式。猜想是不是<code>dumps</code>的时候做了转换。这样的话我们需要看一下<code>dumps</code>的实现。</p>
+
+<pre><code class="language-python">def dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
+        allow_nan=True, cls=None, indent=None, separators=None,
+        default=None, sort_keys=False, **kw):
+
+If ``ensure_ascii`` is false, then the return value can contain non-ASCII
+characters if they appear in strings contained in ``obj``. Otherwise, all
+such characters are escaped in JSON strings. 
+</code></pre>
+
+<p>如果<code>ensure_ascii</code>是false，返回值才能包含非ASCII字符。</p>
+
+<pre><code class="language-python">import json
+
+d = {'你好': 'Python3'}
+
+with open('out.json', 'w') as f:
+    f.write(json.dumps(d, ensure_ascii=False))
+
+with open('out.json', 'r') as f:
+    print(f.read())
+</code></pre>
+
+<pre><code class="language-shell">{'你好': 'Python3'}
+</code></pre>
+
+<p>Perfect! 看来这就是问题所在。</p>
+
+<blockquote>
+<p>上面猜测的第二点并没有什么问题。</p>
+</blockquote>
+
+<h3 id="extension">Extension</h3>
+
+<p>其实，除了<code>dumps</code>之外，写入文件我们还可以用更简单的<code>dump</code>方法，同样需要<code>ensure_ascii=False</code>。</p>
+
+<pre><code class="language-python">import json
+
+d = {'你好': 'Python3'}
+
+with open('out.json', 'w') as f:
+    json.dump(d, f, ensure_ascii=False)
+
+with open('out.json', 'r') as f:
+    print(f.read())
+</code></pre>
+
+<pre><code class="language-shell">{'你好': 'Python3'}
+</code></pre>
+      </article>
+
+      <ul class="pager blog-pager">
+        
+          <li class="previous">
+            <a href="/post/python-property/" data-toggle="tooltip" data-placement="top" title="Python Week 0001 --- property">&larr; Previous Post</a>
+          </li>
+        
+        
+      </ul>
+
       
-      <a href="/tags/python" class="list-group-item">
-          python<span class="badge">12</span></a>
+        
       
-      <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97" class="list-group-item">
-          云计算<span class="badge">4</span></a>
-      
-      <a href="/tags/%E5%85%B6%E4%BB%96" class="list-group-item">
-          其他<span class="badge">4</span></a>
-      
-      <a href="/tags/ptyhon" class="list-group-item">
-          ptyhon<span class="badge">1</span></a>
-      
-      </div>
-    </article>
+
+    </div>
   </div>
+</div>
 
     <footer>
   <div class="container">
